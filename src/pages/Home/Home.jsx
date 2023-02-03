@@ -2,9 +2,13 @@ import React, { useEffect, useState } from "react";
 import { deleteBlog } from "../../controller/deleteBlog";
 import BlogCard from "../../componants/BlogCard/BlogCard";
 import { Row, Pagination, Tabs } from "antd";
-
 import { getblog } from "../../controller/getblog";
-import { handleFilter } from "../../controller/handleFilter";
+import { useDispatch, useSelector } from "react-redux";
+import QuestionCard from "../../componants/QuestionCard/QuestionCard";
+import {
+  getQuestionbyUser,
+  getQuestionToMe,
+} from "../../store/questionReducer/question.action";
 const Home = () => {
   const [Blogs, setBlogs] = useState([]);
   const [totalPages, settotalPages] = useState(1);
@@ -12,6 +16,11 @@ const Home = () => {
   const [filtered, setfiltered] = useState([]);
   const [sortbyTime, setsortbyTime] = useState(-1);
   const [user, setuser] = useState("");
+  const [displayQuestion, setquestions] = useState(false);
+  const [myQuestion, setMyQuesion] = useState(false);
+  const { allQuestions, myQuestions } = useSelector((store) => store.question);
+  const dispatch = useDispatch();
+  const userId = localStorage.getItem("user");
   const items = [
     {
       key: "0",
@@ -29,7 +38,16 @@ const Home = () => {
       key: "3",
       label: `oldest`,
     },
+    {
+      key: "4",
+      label: `My Questions`,
+    },
+    {
+      key: "5",
+      label: "Asked To Me",
+    },
   ];
+
   useEffect(() => {
     handleGetBlogs();
   }, [current, sortbyTime, user]);
@@ -40,14 +58,29 @@ const Home = () => {
   const onChangeTab = (key) => {
     if (key === "3") {
       setsortbyTime(1);
+      setquestions(false);
+      setMyQuesion(false);
     } else if (key === "2") {
       setsortbyTime(-1);
+      setquestions(false);
+      setMyQuesion(false);
     } else if (key === "1") {
       setuser(localStorage.getItem("user"));
+      setquestions(false);
+      setMyQuesion(false);
     } else if (key === "0") {
       setuser(null);
+      setquestions(false);
+      setMyQuesion(false);
+    } else if (key === "4") {
+      dispatch(getQuestionbyUser(userId));
+      setquestions(true);
+      setMyQuesion(false);
+    } else if (key === "5") {
+      dispatch(getQuestionToMe(userId));
+      setMyQuesion(true);
+      setquestions(false);
     }
-    // let data = handleFilter(items[+key], Blogs);
   };
 
   const handleGetBlogs = async () => {
@@ -75,6 +108,8 @@ const Home = () => {
       <Tabs defaultActiveKey="0" items={items} onChange={onChangeTab} />
       <Row justify="space-around" gutter={[16, 24]} style={{ padding: "1%" }}>
         {filtered &&
+          !displayQuestion &&
+          !myQuestion &&
           filtered.map((ele) => {
             return (
               <BlogCard
@@ -85,17 +120,25 @@ const Home = () => {
               />
             );
           })}
+        {displayQuestion &&
+          myQuestions &&
+          myQuestions.map((e) => <QuestionCard data={e} />)}
+        {myQuestion &&
+          allQuestions &&
+          allQuestions.map((e) => <QuestionCard data={e} />)}
       </Row>
 
-      <Pagination
-        current={current}
-        onChange={onChange}
-        total={totalPages * 10}
-        style={{
-          display: "flex",
-          justifyContent: "center",
-        }}
-      />
+      {!displayQuestion && (
+        <Pagination
+          current={current}
+          onChange={onChange}
+          total={totalPages * 10}
+          style={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+        />
+      )}
     </>
   );
 };

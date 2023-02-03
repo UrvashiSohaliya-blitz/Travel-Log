@@ -1,9 +1,10 @@
-import { questionError, questionLoading, questionSuccess } from './question.actionType';
+import { questionError, questionLoading, questionAskedTome, questionAsked } from './question.actionType';
 
 const initialState = {
     questionLoading: false,
-    data: [],
-    questionError: false
+    allQuestions: [],
+    questionError: false,
+    myQuestions: []
 }
 export const questionReducer = ( state = initialState, { type, payload } ) => {
 
@@ -11,10 +12,14 @@ export const questionReducer = ( state = initialState, { type, payload } ) => {
         case questionLoading: {
             return { ...state, questionLoading: true }
         }
-        case questionSuccess: {
-            return { ...state, questionLoading: false, data: payload }
+        case questionAskedTome: {
+            return { ...state, questionLoading: false, allQuestions: payload, questionError: false }
+        }
+        case questionAsked: {
+            return { ...state, questionLoading: false, myQuestions: payload, questionError: false }
         }
         case questionError: {
+
             return { ...state, questionError: true, questionLoading: false }
         }
         default: {

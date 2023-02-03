@@ -13,6 +13,7 @@ const BlogCard = ({ data, handleDelete, handleGetBlogs }) => {
   const [user, setuser] = useState("");
   const time = data.createdAt?.split("T");
   const startDate = data.journyDate.startDate.split("T");
+
   useEffect(() => {
     handleUser();
   }, []);
@@ -92,7 +93,7 @@ const BlogCard = ({ data, handleDelete, handleGetBlogs }) => {
         </div>
       )}
       {userId !== data.userId && data.allowQustions && (
-        <AskQuestion blogId={data._id} userId={data.userId} />
+        <AskQuestion blog={data} userId={userId} />
       )}
     </Card>
   );

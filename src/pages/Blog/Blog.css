@@ -1,0 +1,11 @@
+.flexBox {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  gap: 1%;
+  margin: 1% 1% 1% 0;
+}
+.example {
+  padding-top: 15%;
+  text-align: center;
+}

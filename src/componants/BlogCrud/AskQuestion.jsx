@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Collapse, Input, Tooltip, Button, Modal } from "antd";
+import { Input, Tooltip, Button, Modal } from "antd";
 import { PlusOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 import { askQuestion } from "../../store/questionReducer/question.action";
 import { useDispatch, useSelector } from "react-redux";
-const { Panel } = Collapse;
+
 const { Search } = Input;
 export const AskQuestion = ({ blog, userId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);

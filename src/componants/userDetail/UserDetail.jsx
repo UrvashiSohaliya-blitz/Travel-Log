@@ -1,16 +1,20 @@
-import { Popover, Button } from "antd";
+import { Popover, Button, Tooltip } from "antd";
 import React, { useState, useEffect } from "react";
 import { getUser } from "../../controller/getUser";
 import { useNavigate } from "react-router-dom";
-import { UserOutlined } from "@ant-design/icons";
+import { UserOutlined, LogoutOutlined } from "@ant-design/icons";
+import { useDispatch } from "react-redux";
+import { Logout } from "../../store/AuthReducer/AuthAction";
 const UserDetail = ({ id }) => {
   const [data, setdata] = useState({});
   const navigate = useNavigate();
-  const user = localStorage.getItem("user");
+  const dispatch = useDispatch();
+  // const user = localStorage.getItem("user");
   const handleLogout = () => {
-    localStorage.removeItem("user");
+    dispatch({ type: Logout });
     navigate("/");
   };
+
   useEffect(() => {
     handleUser();
   }, []);
@@ -28,6 +32,11 @@ const UserDetail = ({ id }) => {
       <p>Username : {data.name}</p>
       <p>Email : {data.email}</p>
       <p>Age : {data.age}</p>
+      <Tooltip title="Logout" color="blue">
+        <Button onClick={handleLogout} type="text">
+          <LogoutOutlined /> Logout
+        </Button>
+      </Tooltip>
     </div>
   );
   return (

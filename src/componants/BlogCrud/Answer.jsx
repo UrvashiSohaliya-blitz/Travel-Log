@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Modal, Typography, Input, Tooltip } from "antd";
 import { useDispatch } from "react-redux";
 import { addAnswer } from "../../store/questionReducer/question.action";
-import { DeleteTwoTone, EditTwoTone } from "@ant-design/icons";
+import { EditTwoTone } from "@ant-design/icons";
 
 const { TextArea } = Input;
 const { Title } = Typography;

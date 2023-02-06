@@ -1,4 +1,4 @@
-import { Typography, Card, Button, Tooltip } from "antd";
+import { Typography, Card } from "antd";
 import { LinkOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import { getblogData } from "../../controller/getblog";

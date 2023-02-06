@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Modal, Typography, Tooltip } from "antd";
 import { CommentOutlined } from "@ant-design/icons";
 
-const { Text, Title, Paragraph } = Typography;
+const { Title, Paragraph } = Typography;
 const ViewQuestion = ({ questions }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [ellipsis, setEllipsis] = useState(true);

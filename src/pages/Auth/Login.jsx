@@ -1,7 +1,9 @@
-import React, { useState } from "react";
-import { Button, Form, Input, InputNumber, Typography, message } from "antd";
-import { loginUser } from "../../controller/auth";
+import React, { useEffect, useState } from "react";
+import { Button, Form, Input, Typography, message } from "antd";
+
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../../store/AuthReducer/Auth.action";
 const layout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 16 },
@@ -10,7 +12,8 @@ const layout = {
 const Login = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const [successLogin, setsuccessLogin] = useState(false);
-  const [user, setUser] = useState("");
+  const dispatch = useDispatch();
+  const { authError, userId, username } = useSelector((store) => store.auth);
   const navigate = useNavigate();
   const validateMessages = {
     required: "${label} is required!",
@@ -36,27 +39,25 @@ const Login = () => {
       content: msg,
     });
   };
-
-  const onFinish = async ({ user }) => {
-    try {
-      let res = await loginUser(user);
-      localStorage.setItem("user", res.data.data._id);
-      setUser(res.data.data.name);
-      success(res.data.message);
-      handleTimeOut();
+  useEffect(() => {
+    if (userId) {
+      success();
       setsuccessLogin(true);
-      //navigate("/");
-      console.log("HomePage");
-    } catch (error) {
-      Error(error.response?.data?.message);
+      handleTimeOut();
     }
+  }, [userId]);
+  const onFinish = async ({ user }) => {
+    dispatch(loginUser(user));
   };
-  let id;
+
   const handleTimeOut = () => {
-    id = setTimeout(() => {
+    setTimeout(() => {
       navigate("/");
     }, [5000]);
   };
+  if (authError) {
+    Error("Something went wrong");
+  }
   if (successLogin) {
     return (
       <div
@@ -66,7 +67,7 @@ const Login = () => {
           textTransform: "capitalize",
         }}
       >
-        <Typography.Title>WelCome Back {user}!</Typography.Title>
+        <Typography.Title>WelCome Back {username}!</Typography.Title>
         <Typography.Text>Thank you For Login Again</Typography.Text>
       </div>
     );

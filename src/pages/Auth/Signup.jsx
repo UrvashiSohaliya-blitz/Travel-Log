@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Form, Input, InputNumber, Typography, message } from "antd";
-import { signupUser } from "../../controller/auth";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import useSelection from "antd/es/table/hooks/useSelection";
+import { signupUser } from "../../store/AuthReducer/Auth.action";
+import { AuthLoadig } from "../../store/AuthReducer/AuthAction";
 const layout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 16 },
@@ -9,20 +12,13 @@ const layout = {
 
 const Signup = () => {
   const [messageApi, contextHolder] = message.useMessage();
-  const navigate = useNavigate();
-  const success = (msg) => {
-    messageApi.open({
-      type: "success",
-      content: msg,
-    });
-  };
+  const [successSignup, setsuccessSignup] = useState(false);
 
-  const Error = (msg) => {
-    messageApi.open({
-      type: "error",
-      content: msg,
-    });
-  };
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { authError, userId, username, authLoading } = useSelector(
+    (store) => store.auth
+  );
 
   /* eslint-disable no-template-curly-in-string */
   const validateMessages = {
@@ -37,17 +33,53 @@ const Signup = () => {
   };
   /* eslint-enable no-template-curly-in-string */
 
-  const onFinish = async ({ user }) => {
-    try {
-      let response = await signupUser(user);
-      localStorage.setItem("user", response.data.data._id);
-      success(response.data.message);
-      navigate("/");
-    } catch (error) {
-      Error(error.response.data.message);
-    }
+  const success = (msg) => {
+    messageApi.open({
+      type: "success",
+      content: msg,
+    });
   };
 
+  const Error = (msg) => {
+    messageApi.open({
+      type: "error",
+      content: msg,
+    });
+  };
+  useEffect(() => {
+    if (userId) {
+      success();
+      setsuccessSignup(true);
+      handleTimeOut();
+    }
+  }, [userId]);
+  const onFinish = async ({ user }) => {
+    dispatch(signupUser(user));
+  };
+
+  const handleTimeOut = () => {
+    setTimeout(() => {
+      navigate("/");
+    }, [5000]);
+  };
+  if (authError) {
+    Error("Something went wrong");
+  }
+  console.log(authError, userId, username, authLoading);
+  if (successSignup) {
+    return (
+      <div
+        style={{
+          textAlign: "center",
+          marginTop: "5%",
+          textTransform: "capitalize",
+        }}
+      >
+        <Typography.Title>WelCome {username}!</Typography.Title>
+        <Typography.Text>Thank you For Creating an account</Typography.Text>
+      </div>
+    );
+  }
   return (
     <div>
       {contextHolder}

@@ -7,12 +7,13 @@ import {
   Popconfirm,
   Badge,
   Tooltip,
+  Button,
 } from "antd";
 import { Link } from "react-router-dom";
 import { getUser } from "../../controller/getUser";
 import EditBlog from "../BlogCrud/EditBlog";
 import { AskQuestion } from "../BlogCrud/AskQuestion";
-import { DeleteTwoTone, EditTwoTone } from "@ant-design/icons";
+import { DeleteTwoTone } from "@ant-design/icons";
 import { getQuestionByBlog } from "../../store/questionReducer/question.action";
 import ViewQuestion from "./ViewQuestion";
 
@@ -21,7 +22,6 @@ const BlogCard = ({ data, handleDelete, handleGetBlogs }) => {
   const userId = localStorage.getItem("user");
   const [ellipsis, setEllipsis] = useState(true);
   const [questions, setquestions] = useState([]);
-  const places = data.placesToVisit.join(" | ");
   const [user, setuser] = useState("");
   const time = data.createdAt?.split("T");
   const startDate = data.journyDate.startDate.split("T");
@@ -72,9 +72,12 @@ const BlogCard = ({ data, handleDelete, handleGetBlogs }) => {
           <div>
             <Text>
               {time ? time[0] : ""}{" "}
-              <a style={{ textTransform: "capitalize", fontSize: "18px" }}>
+              <Link
+                style={{ textTransform: "capitalize", fontSize: "17px" }}
+                to="#"
+              >
                 {user ? user : "someone"}{" "}
-              </a>
+              </Link>
               published a blog
             </Text>
           </div>
@@ -109,9 +112,9 @@ const BlogCard = ({ data, handleDelete, handleGetBlogs }) => {
               cancelText="No"
             >
               <Tooltip title="Delete Blog" color="blue">
-                <a href="#">
+                <Button type="link">
                   <DeleteTwoTone />
-                </a>
+                </Button>
               </Tooltip>
             </Popconfirm>
             <EditBlog data={data} handleGetBlogs={handleGetBlogs} />

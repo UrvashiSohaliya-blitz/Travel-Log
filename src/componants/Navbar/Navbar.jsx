@@ -3,13 +3,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { Space, Button, Tooltip } from "antd";
 import UserDetail from "../userDetail/UserDetail";
 import { LogoutOutlined, FormOutlined } from "@ant-design/icons";
+import { useDispatch, useSelector } from "react-redux";
+import { Logout } from "../../store/AuthReducer/AuthAction";
 const Navbar = () => {
   const navigate = useNavigate();
-  const user = localStorage.getItem("user");
-  const handleLogout = () => {
-    localStorage.removeItem("user");
-    navigate("/");
-  };
+  const { userId } = useSelector((store) => store.auth);
+  // const user = localStorage.getItem("user");
+
   return (
     <Space
       style={{
@@ -32,31 +32,17 @@ const Navbar = () => {
           color: "#108ee9",
         }}
       >
-        {user && (
+        {userId && (
           <Tooltip title="Create Blog" color="blue">
             <Link to="/create" s>
               <FormOutlined />
             </Link>
           </Tooltip>
         )}
-        {user && <UserDetail id={user} />}
-        {user && (
-          <Tooltip title="Logout" color="blue">
-            <Button
-              onClick={handleLogout}
-              type="ghost"
-              style={{
-                fontSize: "24px",
-                color: "#108ee9",
-              }}
-            >
-              <LogoutOutlined />
-            </Button>
-          </Tooltip>
-        )}
+        {userId && <UserDetail id={userId} />}
 
-        {!user && <Link to="/login">Login</Link>}
-        {!user && <Link to="/signup">Signup</Link>}
+        {!userId && <Link to="/login">Login</Link>}
+        {!userId && <Link to="/signup">Signup</Link>}
       </Space>
     </Space>
   );

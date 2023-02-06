@@ -14,7 +14,7 @@ export const EditBlog = ({ data, handleGetBlogs }) => {
 
   const handleOk = async () => {
     try {
-      let res = await updateBlog(data._id, {
+      await updateBlog(data._id, {
         title: title,
         description: description,
       });

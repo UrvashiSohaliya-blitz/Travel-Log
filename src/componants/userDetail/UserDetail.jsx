@@ -28,7 +28,7 @@ const UserDetail = ({ id }) => {
       <p>Username : {data.name}</p>
       <p>Email : {data.email}</p>
       <p>Age : {data.age}</p>
-      <Button onClick={handleLogout}>Logout</Button>
+      {/* <Button onClick={handleLogout}>Logout</Button> */}
     </div>
   );
   return (

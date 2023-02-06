@@ -19,6 +19,7 @@ export const AskQuestion = ({ blog, userId }) => {
         blogId: blog._id,
         userId: userId,
         blogUser: blog.userId,
+        answer: "",
       })
     );
     setval("");

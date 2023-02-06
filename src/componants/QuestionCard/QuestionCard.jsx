@@ -5,6 +5,8 @@ import { getblogData } from "../../controller/getblog";
 import { getUser } from "../../controller/getUser";
 import { Link } from "react-router-dom";
 import BlogCard from "../BlogCard/BlogCard";
+import Answer from "../BlogCrud/Answer";
+import Paragraph from "antd/es/typography/Paragraph";
 const { Text } = Typography;
 const QuestionCard = ({ data }) => {
   const [loading, setloading] = useState(true);
@@ -49,8 +51,16 @@ const QuestionCard = ({ data }) => {
       <div>
         <Text>Question : {data.question}</Text>
       </div>
+      {data.answer?.length > 0 ? (
+        <>
+          <Paragraph>Answer :{data.answer}</Paragraph>
+          <Answer data={data} />
+        </>
+      ) : (
+        <Answer data={data} />
+      )}
 
-      <Button>Ans</Button>
+      {}
     </Card>
   );
 };

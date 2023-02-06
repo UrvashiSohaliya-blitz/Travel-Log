@@ -23,10 +23,18 @@ const Navbar = () => {
       <Link to="/">
         <h1>TravelBlog</h1>
       </Link>
-      <Space>
+      <Space
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "baseline",
+          fontSize: "24px",
+          color: "#108ee9",
+        }}
+      >
         {user && (
           <Tooltip title="Create Blog" color="blue">
-            <Link to="/create">
+            <Link to="/create" s>
               <FormOutlined />
             </Link>
           </Tooltip>
@@ -34,7 +42,14 @@ const Navbar = () => {
         {user && <UserDetail id={user} />}
         {user && (
           <Tooltip title="Logout" color="blue">
-            <Button onClick={handleLogout} type="ghost">
+            <Button
+              onClick={handleLogout}
+              type="ghost"
+              style={{
+                fontSize: "24px",
+                color: "#108ee9",
+              }}
+            >
               <LogoutOutlined />
             </Button>
           </Tooltip>

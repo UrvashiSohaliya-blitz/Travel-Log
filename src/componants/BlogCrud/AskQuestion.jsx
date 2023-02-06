@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Collapse, Input } from "antd";
+import { Collapse, Input, Tooltip, Button, Modal } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { askQuestion } from "../../store/questionReducer/question.action";
 import { useDispatch, useSelector } from "react-redux";
 const { Panel } = Collapse;
 const { Search } = Input;
 export const AskQuestion = ({ blog, userId }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { questionLoading, data, questionError } = useSelector(
     (store) => store.question
   );
@@ -22,12 +23,38 @@ export const AskQuestion = ({ blog, userId }) => {
         answer: "",
       })
     );
+    if (!questionLoading && !questionError) {
+      alert("Question Added");
+    }
     setval("");
+    setIsModalOpen(false);
+  };
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
   };
 
   return (
-    <Collapse defaultActiveKey={["1"]}>
-      <Panel header={"Ask Question"} key="1">
+    <>
+      {" "}
+      <Tooltip title="Ask Question" color="blue">
+        <Button type="link" onClick={showModal}>
+          Ask Question
+        </Button>
+      </Tooltip>
+      <Modal
+        title={"Ask Question"}
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
         <Search
           placeholder="Question"
           value={val}
@@ -35,9 +62,11 @@ export const AskQuestion = ({ blog, userId }) => {
           onChange={(e) => {
             setval(e.target.value);
           }}
+          loading={questionLoading}
+          error={questionError}
           onSearch={onSearch}
         />
-      </Panel>
-    </Collapse>
+      </Modal>
+    </>
   );
 };

@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { Button, Modal, Typography, Input } from "antd";
+import { Button, Modal, Typography, Input, Tooltip } from "antd";
 import { useDispatch } from "react-redux";
 import { addAnswer } from "../../store/questionReducer/question.action";
+import { DeleteTwoTone, EditTwoTone } from "@ant-design/icons";
+
 const { TextArea } = Input;
 const { Title } = Typography;
 const Answer = ({ data }) => {
@@ -25,8 +27,14 @@ const Answer = ({ data }) => {
   };
   return (
     <>
-      <Button type="ghost" onClick={showModal}>
-        {data.answer ? "Edit" : "Answer"}
+      <Button type="link" onClick={showModal}>
+        {data.answer ? (
+          <Tooltip title="Edit Answer">
+            <EditTwoTone />
+          </Tooltip>
+        ) : (
+          "Give Answer"
+        )}
       </Button>
       <Modal
         title={data.question}

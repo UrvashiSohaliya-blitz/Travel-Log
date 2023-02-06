@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { Button, Modal, Typography } from "antd";
+import { Button, Modal, Typography, Tooltip } from "antd";
 import { updateBlog } from "../../controller/updateBlog";
-const { Paragraph } = Typography;
+import { EditTwoTone } from "@ant-design/icons";
+
+const { Paragraph, Title } = Typography;
 export const EditBlog = ({ data, handleGetBlogs }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [title, settitle] = useState(data.title);
@@ -29,16 +31,21 @@ export const EditBlog = ({ data, handleGetBlogs }) => {
 
   return (
     <div>
-      <Button type="link" onClick={showModal}>
-        Edit
-      </Button>
+      <Tooltip title="Edit Blog" color="blue">
+        <Button type="link" onClick={showModal}>
+          <EditTwoTone />
+        </Button>
+      </Tooltip>
+
       <Modal
         title={"Editing your blog"}
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
       >
-        <Paragraph editable={{ onChange: settitle }}>{title}</Paragraph>
+        <Title level={4} editable={{ onChange: settitle }}>
+          {title}
+        </Title>
         <Paragraph editable={{ onChange: setdescription }}>
           {description}
         </Paragraph>

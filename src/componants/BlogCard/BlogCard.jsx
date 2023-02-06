@@ -1,14 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { Card, Typography, message, Image, Popconfirm, Badge } from "antd";
+import {
+  Card,
+  Typography,
+  message,
+  Image,
+  Popconfirm,
+  Badge,
+  Tooltip,
+} from "antd";
 import { Link } from "react-router-dom";
 import { getUser } from "../../controller/getUser";
 import EditBlog from "../BlogCrud/EditBlog";
 import { AskQuestion } from "../BlogCrud/AskQuestion";
+import { DeleteTwoTone, EditTwoTone } from "@ant-design/icons";
+import { getQuestionByBlog } from "../../store/questionReducer/question.action";
+import ViewQuestion from "./ViewQuestion";
 
 const { Text, Paragraph } = Typography;
 const BlogCard = ({ data, handleDelete, handleGetBlogs }) => {
   const userId = localStorage.getItem("user");
   const [ellipsis, setEllipsis] = useState(true);
+  const [questions, setquestions] = useState([]);
   const places = data.placesToVisit.join(" | ");
   const [user, setuser] = useState("");
   const time = data.createdAt?.split("T");
@@ -16,6 +28,7 @@ const BlogCard = ({ data, handleDelete, handleGetBlogs }) => {
 
   useEffect(() => {
     handleUser();
+    getQuestions();
   }, []);
 
   const handleUser = async () => {
@@ -26,7 +39,14 @@ const BlogCard = ({ data, handleDelete, handleGetBlogs }) => {
       console.log(error);
     }
   };
-
+  const getQuestions = async () => {
+    try {
+      let res = await getQuestionByBlog(data._id);
+      setquestions(res.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const confirm = (e) => {
     handleDelete(data._id);
     message.success("Blog Deleted");
@@ -87,9 +107,14 @@ const BlogCard = ({ data, handleDelete, handleGetBlogs }) => {
             okText="Yes"
             cancelText="No"
           >
-            <a href="#">Delete</a>
+            <Tooltip title="Delete Blog" color="blue">
+              <a href="#">
+                <DeleteTwoTone />
+              </a>
+            </Tooltip>
           </Popconfirm>
           <EditBlog data={data} handleGetBlogs={handleGetBlogs} />
+          {questions && <ViewQuestion questions={questions} />}
         </div>
       )}
       {userId !== data.userId && data.allowQustions && (

@@ -28,7 +28,6 @@ const UserDetail = ({ id }) => {
       <p>Username : {data.name}</p>
       <p>Email : {data.email}</p>
       <p>Age : {data.age}</p>
-      {/* <Button onClick={handleLogout}>Logout</Button> */}
     </div>
   );
   return (
@@ -37,10 +36,16 @@ const UserDetail = ({ id }) => {
         placement="bottomLeft"
         title={text}
         content={content}
-        trigger="click"
+        trigger="hover"
       >
-        <Button type="ghost" style={{ textTransform: "capitalize" }}>
-          <UserOutlined color="red" />
+        <Button
+          type="ghost"
+          style={{
+            fontSize: "24px",
+            color: "#108ee9",
+          }}
+        >
+          <UserOutlined />
         </Button>
       </Popover>
     </div>

@@ -31,10 +31,10 @@ const App = ({ images, setImages }) => {
   const handleChange = ({ fileList: newFileList }) => {
     setFileList(newFileList);
     const data = fileList.map((e) => e.thumbUrl);
+
     setImages(data);
   };
   console.log(images);
-
   const uploadButton = (
     <div>
       <PlusOutlined />
@@ -50,7 +50,7 @@ const App = ({ images, setImages }) => {
         onPreview={handlePreview}
         onChange={handleChange}
       >
-        {fileList.length >= 8 ? null : uploadButton}
+        {fileList.length >= 1 ? null : uploadButton}
       </Upload>
       <Modal
         open={previewOpen}

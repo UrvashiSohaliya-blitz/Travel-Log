@@ -6,6 +6,7 @@ import {
   Button,
   Modal,
   Input,
+  Tooltip,
 } from "antd";
 import { LinkOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
@@ -17,13 +18,17 @@ import {
   deleteQuestion,
   updateQuestion,
 } from "../../store/questionReducer/question.action";
-const { Text } = Typography;
+import { DeleteTwoTone, EditTwoTone } from "@ant-design/icons";
+
+const { Text, Paragraph } = Typography;
 const MyQuestionCard = ({ data }) => {
   const [loading, setloading] = useState(true);
   const [blog, setblog] = useState({});
   const [user, setuser] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [question, setquestions] = useState(data.question);
+  const [ellipsis, setEllipsis] = useState(true);
+
   const dispatch = useDispatch();
   useEffect(() => {
     handleGetData();
@@ -90,12 +95,18 @@ const MyQuestionCard = ({ data }) => {
       }
     >
       <Text>Question : {data.question}</Text>
+      <Paragraph ellipsis={ellipsis ? { rows: 4 } : false}>
+        <b>Answer :</b>
+        {data.answer}
+      </Paragraph>
       <div style={{ display: "flex", gap: "5px", alignItems: "center" }}>
-        <Button type="link" onClick={showModal}>
-          Edit
-        </Button>
+        <Tooltip title="Edit Question" color="blue">
+          <Button type="link" onClick={showModal}>
+            <EditTwoTone />
+          </Button>
+        </Tooltip>
         <Modal
-          title="Basic Modal"
+          title="Edit your Question"
           open={isModalOpen}
           onOk={handleOk}
           onCancel={handleCancel}
@@ -110,7 +121,11 @@ const MyQuestionCard = ({ data }) => {
           okText="Yes"
           cancelText="No"
         >
-          <a href="#">Delete</a>
+          <a href="#">
+            <Tooltip title="Delete Question" color="blue">
+              <DeleteTwoTone />
+            </Tooltip>
+          </a>
         </Popconfirm>
       </div>
     </Card>

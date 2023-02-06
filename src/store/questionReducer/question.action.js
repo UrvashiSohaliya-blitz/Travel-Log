@@ -89,3 +89,7 @@ export const deleteQuestion = ( id ) => async ( dispatch ) => {
     }
 
 }
+
+export const getQuestionByBlog = async ( id ) => {
+    return await axios.get( `http://localhost:3000/question/blog/${ id }` );
+}

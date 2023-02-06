@@ -1,10 +1,10 @@
-import { Typography, Card, Button } from "antd";
+import { Typography, Card, Button, Tooltip } from "antd";
 import { LinkOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import { getblogData } from "../../controller/getblog";
 import { getUser } from "../../controller/getUser";
 import { Link } from "react-router-dom";
-import BlogCard from "../BlogCard/BlogCard";
+
 import Answer from "../BlogCrud/Answer";
 import Paragraph from "antd/es/typography/Paragraph";
 const { Text } = Typography;
@@ -12,7 +12,7 @@ const QuestionCard = ({ data }) => {
   const [loading, setloading] = useState(true);
   const [blog, setblog] = useState({});
   const [user, setuser] = useState("");
-
+  const [ellipsis, setEllipsis] = useState(true);
   useEffect(() => {
     handleGetData();
   }, []);
@@ -49,11 +49,17 @@ const QuestionCard = ({ data }) => {
       }
     >
       <div>
-        <Text>Question : {data.question}</Text>
+        <Text>
+          <b>Question : </b>
+          {data.question}
+        </Text>
       </div>
       {data.answer?.length > 0 ? (
         <>
-          <Paragraph>Answer :{data.answer}</Paragraph>
+          <Paragraph ellipsis={ellipsis ? { rows: 4 } : false}>
+            <b>Answer :</b>
+            {data.answer}
+          </Paragraph>
           <Answer data={data} />
         </>
       ) : (

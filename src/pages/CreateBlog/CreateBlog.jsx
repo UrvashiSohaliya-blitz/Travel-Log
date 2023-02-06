@@ -73,6 +73,7 @@ const CreateBlog = () => {
       const res = await postBlog(BlogData);
       onReset();
       success(res.data.message);
+
       navigate("/");
     } catch (error) {
       Error(error.response.data.message);

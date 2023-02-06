@@ -33,7 +33,6 @@ const CarouselPlay = ({ images }) => {
               width="100%"
               height="410px"
               fallback="https://picsum.photos/700/400.jpg"
-              style={{ width: "150px", height: "120px" }}
             />
           ))}
       </Carousel>

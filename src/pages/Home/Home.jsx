@@ -9,6 +9,7 @@ import {
   getQuestionbyUser,
   getQuestionToMe,
 } from "../../store/questionReducer/question.action";
+import MyQuestionCard from "../../componants/QuestionCard/MyQuestion";
 const Home = () => {
   const [Blogs, setBlogs] = useState([]);
   const [totalPages, settotalPages] = useState(1);
@@ -122,13 +123,13 @@ const Home = () => {
           })}
         {displayQuestion &&
           myQuestions &&
-          myQuestions.map((e) => <QuestionCard data={e} />)}
+          myQuestions.map((e) => <MyQuestionCard data={e} />)}
         {myQuestion &&
           allQuestions &&
           allQuestions.map((e) => <QuestionCard data={e} />)}
       </Row>
 
-      {!displayQuestion && (
+      {!displayQuestion && !myQuestion && (
         <Pagination
           current={current}
           onChange={onChange}

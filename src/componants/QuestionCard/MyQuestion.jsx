@@ -1,12 +1,11 @@
-import { Typography, Card, Button } from "antd";
+import { Typography, Card } from "antd";
 import { LinkOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import { getblogData } from "../../controller/getblog";
 import { getUser } from "../../controller/getUser";
 import { Link } from "react-router-dom";
-import BlogCard from "../BlogCard/BlogCard";
 const { Text } = Typography;
-const QuestionCard = ({ data }) => {
+const MyQuestionCard = ({ data }) => {
   const [loading, setloading] = useState(true);
   const [blog, setblog] = useState({});
   const [user, setuser] = useState("");
@@ -36,6 +35,8 @@ const QuestionCard = ({ data }) => {
       setloading(false);
     }
   };
+
+  console.log(data);
   return (
     <Card
       title={blog.title}
@@ -46,13 +47,9 @@ const QuestionCard = ({ data }) => {
         </Link>
       }
     >
-      <div>
-        <Text>Question : {data.question}</Text>
-      </div>
-
-      <Button>Ans</Button>
+      <Text>Question : {data.question}</Text>
     </Card>
   );
 };
 
-export default QuestionCard;
+export default MyQuestionCard;

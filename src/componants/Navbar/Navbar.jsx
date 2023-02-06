@@ -1,15 +1,11 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Space, Button } from "antd";
+import { Space, Button, Tooltip } from "antd";
 import UserDetail from "../userDetail/UserDetail";
-
+import { FormOutlined } from "@ant-design/icons";
 const Navbar = () => {
-  const navigate = useNavigate();
   const user = localStorage.getItem("user");
-  const handleLogout = () => {
-    localStorage.removeItem("user");
-    navigate("/");
-  };
+
   return (
     <Space
       style={{
@@ -24,9 +20,14 @@ const Navbar = () => {
         <h1>TravelBlog</h1>
       </Link>
       <Space>
-        {user && <Link to="/create">Create</Link>}
+        {user && (
+          <Tooltip title="Create Blog" color="blue">
+            <Link to="/create">
+              <FormOutlined fontSize="26px" />
+            </Link>
+          </Tooltip>
+        )}
         {user && <UserDetail id={user} />}
-        {user && <Button onClick={handleLogout}>Logout</Button>}
 
         {!user && <Link to="/login">Login</Link>}
         {!user && <Link to="/signup">Signup</Link>}

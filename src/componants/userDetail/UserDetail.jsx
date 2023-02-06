@@ -1,10 +1,16 @@
 import { Popover, Button } from "antd";
 import React, { useState, useEffect } from "react";
 import { getUser } from "../../controller/getUser";
-
+import { useNavigate } from "react-router-dom";
+import { UserOutlined } from "@ant-design/icons";
 const UserDetail = ({ id }) => {
   const [data, setdata] = useState({});
-
+  const navigate = useNavigate();
+  const user = localStorage.getItem("user");
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    navigate("/");
+  };
   useEffect(() => {
     handleUser();
   }, []);
@@ -22,6 +28,7 @@ const UserDetail = ({ id }) => {
       <p>Username : {data.name}</p>
       <p>Email : {data.email}</p>
       <p>Age : {data.age}</p>
+      <Button onClick={handleLogout}>Logout</Button>
     </div>
   );
   return (
@@ -32,8 +39,8 @@ const UserDetail = ({ id }) => {
         content={content}
         trigger="click"
       >
-        <Button type="dashed" style={{ textTransform: "capitalize" }}>
-          {data.name}
+        <Button type="ghost" style={{ textTransform: "capitalize" }}>
+          <UserOutlined color="red" />
         </Button>
       </Popover>
     </div>

@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 
 import Answer from "../BlogCrud/Answer";
 import Paragraph from "antd/es/typography/Paragraph";
+import Title from "antd/es/typography/Title";
 const { Text } = Typography;
 const QuestionCard = ({ data }) => {
   const [loading, setloading] = useState(true);
@@ -32,7 +33,8 @@ const QuestionCard = ({ data }) => {
       let res = await getblogData(data.blogId);
 
       setblog(res.data.data);
-      handleUser(res.data.data.userId);
+
+      handleUser(data.userId);
       setloading(false);
     } catch (error) {
       setloading(false);
@@ -49,15 +51,25 @@ const QuestionCard = ({ data }) => {
       }
     >
       <div>
-        <Text>
-          <b>Question : </b>
+        <Title level={5} type="warning">
           {data.question}
+        </Title>
+        <Text
+          style={{
+            fontSize: "11px",
+            color: "gray",
+            textTransform: "capitalize",
+          }}
+        >
+          {" "}
+          (asked by <strong>{user}</strong>)
         </Text>
       </div>
+
       {data.answer?.length > 0 ? (
         <>
+          <b>Answered </b>
           <Paragraph ellipsis={ellipsis ? { rows: 4 } : false}>
-            <b>Answer :</b>
             {data.answer}
           </Paragraph>
           <Answer data={data} />

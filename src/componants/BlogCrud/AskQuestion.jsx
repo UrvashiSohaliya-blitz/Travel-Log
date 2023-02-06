@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Collapse, Input, Tooltip, Button, Modal } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 import { askQuestion } from "../../store/questionReducer/question.action";
 import { useDispatch, useSelector } from "react-redux";
 const { Panel } = Collapse;
@@ -46,7 +46,7 @@ export const AskQuestion = ({ blog, userId }) => {
       {" "}
       <Tooltip title="Ask Question" color="blue">
         <Button type="link" onClick={showModal}>
-          Ask Question
+          <QuestionCircleOutlined />
         </Button>
       </Tooltip>
       <Modal

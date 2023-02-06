@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Button, Modal, Typography, Card } from "antd";
+import { Button, Modal, Typography, Tooltip } from "antd";
+import { CommentOutlined } from "@ant-design/icons";
 
 const { Text, Title, Paragraph } = Typography;
 const ViewQuestion = ({ questions }) => {
@@ -19,9 +20,11 @@ const ViewQuestion = ({ questions }) => {
 
   return (
     <>
-      <Button type="ghost" onClick={showModal}>
-        View Questions
-      </Button>
+      <Tooltip title="View Discussion" color="blue">
+        <Button type="link" onClick={showModal}>
+          <CommentOutlined />
+        </Button>
+      </Tooltip>
       <Modal
         title="Basic Modal"
         open={isModalOpen}

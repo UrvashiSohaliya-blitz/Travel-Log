@@ -29,7 +29,7 @@ const Answer = ({ data }) => {
     <>
       <Button type="link" onClick={showModal}>
         {data.answer ? (
-          <Tooltip title="Edit Answer">
+          <Tooltip title="Edit Answer" color="blue">
             <EditTwoTone />
           </Tooltip>
         ) : (

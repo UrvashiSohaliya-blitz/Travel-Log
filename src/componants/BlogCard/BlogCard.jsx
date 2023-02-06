@@ -97,29 +97,31 @@ const BlogCard = ({ data, handleDelete, handleGetBlogs }) => {
           {data.description}
         </Paragraph>
       </div>
-      {userId === data.userId && (
-        <div style={{ display: "flex", gap: "5px", alignItems: "center" }}>
-          <Popconfirm
-            title="Delete the blog"
-            description="Are you sure to delete this blog?"
-            onConfirm={confirm}
-            onCancel={cancel}
-            okText="Yes"
-            cancelText="No"
-          >
-            <Tooltip title="Delete Blog" color="blue">
-              <a href="#">
-                <DeleteTwoTone />
-              </a>
-            </Tooltip>
-          </Popconfirm>
-          <EditBlog data={data} handleGetBlogs={handleGetBlogs} />
-          {questions && <ViewQuestion questions={questions} />}
-        </div>
-      )}
-      {userId !== data.userId && data.allowQustions && (
-        <AskQuestion blog={data} userId={userId} />
-      )}
+      <div style={{ display: "flex", gap: "5px", alignItems: "center" }}>
+        {userId === data.userId && (
+          <div style={{ display: "flex", gap: "5px", alignItems: "center" }}>
+            <Popconfirm
+              title="Delete the blog"
+              description="Are you sure to delete this blog?"
+              onConfirm={confirm}
+              onCancel={cancel}
+              okText="Yes"
+              cancelText="No"
+            >
+              <Tooltip title="Delete Blog" color="blue">
+                <a href="#">
+                  <DeleteTwoTone />
+                </a>
+              </Tooltip>
+            </Popconfirm>
+            <EditBlog data={data} handleGetBlogs={handleGetBlogs} />
+          </div>
+        )}
+        {questions.length > 0 && <ViewQuestion questions={questions} />}
+        {userId !== data.userId && data.allowQustions && (
+          <AskQuestion blog={data} userId={userId} />
+        )}
+      </div>
     </Card>
   );
 };

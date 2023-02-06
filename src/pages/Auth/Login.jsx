@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Form, Input, InputNumber, Typography, message } from "antd";
 import { loginUser } from "../../controller/auth";
 import { useNavigate } from "react-router-dom";
@@ -7,8 +7,10 @@ const layout = {
   wrapperCol: { span: 16 },
 };
 
-const Signup = () => {
+const Login = () => {
   const [messageApi, contextHolder] = message.useMessage();
+  const [successLogin, setsuccessLogin] = useState(false);
+  const [user, setUser] = useState("");
   const navigate = useNavigate();
   const validateMessages = {
     required: "${label} is required!",
@@ -39,14 +41,36 @@ const Signup = () => {
     try {
       let res = await loginUser(user);
       localStorage.setItem("user", res.data.data._id);
+      setUser(res.data.data.name);
       success(res.data.message);
-
-      navigate("/");
+      handleTimeOut();
+      setsuccessLogin(true);
+      //navigate("/");
+      console.log("HomePage");
     } catch (error) {
       Error(error.response?.data?.message);
     }
   };
-
+  let id;
+  const handleTimeOut = () => {
+    id = setTimeout(() => {
+      navigate("/");
+    }, [5000]);
+  };
+  if (successLogin) {
+    return (
+      <div
+        style={{
+          textAlign: "center",
+          marginTop: "5%",
+          textTransform: "capitalize",
+        }}
+      >
+        <Typography.Title>WelCome Back {user}!</Typography.Title>
+        <Typography.Text>Thank you For Login Again</Typography.Text>
+      </div>
+    );
+  }
   return (
     <div>
       {contextHolder}
@@ -87,4 +111,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default Login;

@@ -17,7 +17,7 @@ import CreateFields from "./CreateFields";
 import Ratings from "./Ratings";
 import { useNavigate, Link } from "react-router-dom";
 import Upload from "./Upload";
-import { LeftOutlined } from "@ant-design/icons";
+import { ArrowLeftOutlined } from "@ant-design/icons";
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 const { Title } = Typography;
@@ -89,9 +89,9 @@ const CreateBlog = () => {
 
   return (
     <div>
-      <Title style={{ position: "absolute", top: "15%" }}>
+      <Title style={{ position: "absolute", top: "10%" }} level={4}>
         <Link to="/">
-          <LeftOutlined />
+          <ArrowLeftOutlined />
         </Link>
       </Title>
 

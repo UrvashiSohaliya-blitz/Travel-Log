@@ -1,8 +1,12 @@
-import { Typography, Button, Tooltip, Avatar, Space, Row } from "antd";
+import { Typography, Button, Tooltip, Card, Space, Row } from "antd";
 import React, { useState, useEffect } from "react";
 import { getUser } from "../../controller/getUser";
 import { Link, useNavigate } from "react-router-dom";
-import { UserOutlined, LeftOutlined, LogoutOutlined } from "@ant-design/icons";
+import {
+  ArrowLeftOutlined,
+  LeftOutlined,
+  LogoutOutlined,
+} from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { Logout } from "../../store/AuthReducer/AuthAction";
 
@@ -33,13 +37,14 @@ const UserDetail = () => {
 
   return (
     <Row align="middle" justify="space-between">
-      <Title>
+      <Title style={{ position: "absolute", top: "10%" }} level={4}>
         <Link to="/">
-          <LeftOutlined />
+          <ArrowLeftOutlined />
         </Link>
       </Title>
+      <div></div>
       <Space>
-        <div>
+        <Card>
           <Text
             strong
             style={{ textTransform: "capitalize", fontSize: "17px" }}
@@ -60,7 +65,7 @@ const UserDetail = () => {
               <LogoutOutlined /> Logout
             </Button>
           </Tooltip>
-        </div>
+        </Card>
       </Space>
     </Row>
   );

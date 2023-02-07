@@ -19,7 +19,7 @@ const CarouselPlay = ({ images }) => {
       <Carousel
         autoplay
         style={{
-          width: "600px",
+          // width: "600px",
           height: "450px",
           margin: "auto",
           padding: "2%",
@@ -30,7 +30,7 @@ const CarouselPlay = ({ images }) => {
           images.map((e) => (
             <Image
               src={e}
-              width="100%"
+              // width="100%"
               height="410px"
               fallback="https://picsum.photos/700/400.jpg"
             />

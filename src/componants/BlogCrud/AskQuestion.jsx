@@ -5,7 +5,7 @@ import { askQuestion } from "../../store/questionReducer/question.action";
 import { useDispatch, useSelector } from "react-redux";
 
 const { Search } = Input;
-export const AskQuestion = ({ blog, userId }) => {
+export const AskQuestion = ({ blog, userId, handleGetBlogs }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { questionLoading, data, questionError } = useSelector(
     (store) => store.question
@@ -23,6 +23,7 @@ export const AskQuestion = ({ blog, userId }) => {
         answer: "",
       })
     );
+    handleGetBlogs();
     if (!questionLoading && !questionError) {
       alert("Question Added");
     }

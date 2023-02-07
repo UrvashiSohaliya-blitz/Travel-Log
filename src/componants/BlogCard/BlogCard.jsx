@@ -120,9 +120,15 @@ const BlogCard = ({ data, handleDelete, handleGetBlogs }) => {
             <EditBlog data={data} handleGetBlogs={handleGetBlogs} />
           </div>
         )}
-        {questions.length > 0 && <ViewQuestion questions={questions} />}
+        {questions.length > 0 && (
+          <ViewQuestion questions={questions} getQuestions={getQuestions} />
+        )}
         {userId !== data.userId && data.allowQustions && (
-          <AskQuestion blog={data} userId={userId} />
+          <AskQuestion
+            blog={data}
+            userId={userId}
+            handleGetBlogs={handleGetBlogs}
+          />
         )}
       </div>
     </Card>

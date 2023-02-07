@@ -90,7 +90,8 @@ const Home = () => {
 
       settotalPages(res.data.TotalPages);
       setBlogs(res.data.data);
-      setfiltered(res.data.data);
+      setfiltered( res.data.data );
+      console.log('blog')
     } catch (e) {
       console.log(e);
     }

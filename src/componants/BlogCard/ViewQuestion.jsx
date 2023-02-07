@@ -3,10 +3,11 @@ import { Button, Modal, Typography, Tooltip } from "antd";
 import { CommentOutlined } from "@ant-design/icons";
 
 const { Title, Paragraph } = Typography;
-const ViewQuestion = ({ questions }) => {
+const ViewQuestion = ({ questions, getQuestions }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [ellipsis, setEllipsis] = useState(true);
   const showModal = () => {
+    getQuestions();
     setIsModalOpen(true);
   };
 
@@ -35,6 +36,7 @@ const ViewQuestion = ({ questions }) => {
           questions.map((e) => {
             return (
               <div
+                key={e._id}
                 style={{ marginTop: "2%", borderBottom: "1px solid lightgray" }}
               >
                 <Title level={5}>{e.question}</Title>

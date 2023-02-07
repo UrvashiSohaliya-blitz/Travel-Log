@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { deleteBlog } from "../../controller/deleteBlog";
 import BlogCard from "../../componants/BlogCard/BlogCard";
 import { DownOutlined, HomeOutlined } from "@ant-design/icons";
 
 import { Row, Pagination, Dropdown, Divider, Typography, Space } from "antd";
-import { getblog } from "../../controller/getblog";
+
 import { useDispatch, useSelector } from "react-redux";
 import QuestionCard from "../../componants/QuestionCard/QuestionCard";
 import {
@@ -19,12 +18,6 @@ import {
 } from "../../store/BlogReducer/Blog.actionType";
 const { Text, Title } = Typography;
 const Home = () => {
-  const [Blogs, setBlogs] = useState([]);
-  const [totalPages, settotalPages] = useState(1);
-  const [current, setCurrent] = useState(1);
-  const [filtered, setfiltered] = useState([]);
-  const [sortbyTime, setsortbyTime] = useState(-1);
-  const [user, setuser] = useState("");
   const [displayQuestion, setquestions] = useState(false);
   const [myQuestion, setMyQuesion] = useState(false);
   const { allQuestions, myQuestions } = useSelector((store) => store.question);
@@ -38,7 +31,6 @@ const Home = () => {
     SortBlogs,
   } = useSelector((store) => store.blogs);
   const dispatch = useDispatch();
-  const userId = localStorage.getItem("user");
 
   const items = [
     {
@@ -71,60 +63,11 @@ const Home = () => {
   ];
 
   useEffect(() => {
-    handleGetBlogs();
     dispatch(getAllblog(curruntPage - 1, 6, SortBlogs));
-  }, [curruntPage, SortBlogs, user]);
+  }, [curruntPage, SortBlogs]);
 
   const onChange = (page) => {
     dispatch({ type: setCurruntPage, payload: page });
-  };
-  // const onChangeTab = (key) => {
-  //   if (key === "3") {
-  //     setsortbyTime(1);
-  //     setquestions(false);
-  //     setMyQuesion(false);
-  //   } else if (key === "2") {
-  //     setsortbyTime(-1);
-  //     setquestions(false);
-  //     setMyQuesion(false);
-  //   } else if (key === "1") {
-  //     setuser(localStorage.getItem("user"));
-  //     setquestions(false);
-  //     setMyQuesion(false);
-  //   } else if (key === "0") {
-  //     setuser(null);
-  //     setquestions(false);
-  //     setMyQuesion(false);
-  //   } else if (key === "4") {
-  //     dispatch(getQuestionbyUser(userId));
-  //     setquestions(true);
-  //     setMyQuesion(false);
-  //   } else if (key === "5") {
-  //     dispatch(getQuestionToMe(userId));
-  //     setMyQuesion(true);
-  //     setquestions(false);
-  //   }
-  // };
-
-  const handleGetBlogs = async () => {
-    try {
-      let res = await getblog(current - 1, 6, sortbyTime, user);
-
-      settotalPages(res.data.TotalPages);
-      setBlogs(res.data.data);
-      setfiltered(res.data.data);
-      console.log("blog");
-    } catch (e) {
-      console.log(e);
-    }
-  };
-  const handleDelete = async (id) => {
-    try {
-      let res = await deleteBlog(id);
-      handleGetBlogs();
-    } catch (e) {
-      console.log(e);
-    }
   };
 
   return (
@@ -147,14 +90,7 @@ const Home = () => {
           !displayQuestion &&
           !myQuestion &&
           AllBlogs.map((ele) => {
-            return (
-              <BlogCard
-                key={ele._id}
-                data={ele}
-                handleDelete={handleDelete}
-                handleGetBlogs={handleGetBlogs}
-              />
-            );
+            return <BlogCard key={ele._id} data={ele} />;
           })}
         {displayQuestion &&
           myQuestions &&
@@ -168,7 +104,7 @@ const Home = () => {
         <Pagination
           current={curruntPage}
           onChange={onChange}
-          total={totalPages * 10}
+          total={TotalPages * 10}
           style={{
             display: "flex",
             justifyContent: "center",

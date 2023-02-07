@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import moment from "moment";
-import { postBlog } from "../../controller/postblog";
 import {
   Form,
   Input,
@@ -18,6 +16,8 @@ import Ratings from "./Ratings";
 import { useNavigate, Link } from "react-router-dom";
 import Upload from "./Upload";
 import { ArrowLeftOutlined } from "@ant-design/icons";
+import { useDispatch, useSelector } from "react-redux";
+import { postBlog } from "../../store/BlogReducer/Blog.action";
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 const { Title } = Typography;
@@ -27,10 +27,12 @@ const CreateBlog = () => {
   const [travelRate, setTravelRate] = useState(-1);
   const [saftyRate, setSaftyRate] = useState(-1);
   const [messageApi, contextHolder] = message.useMessage();
-
   const [images, setImages] = useState([]);
+
   const [form] = Form.useForm();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { blogLoading, blogError } = useSelector((store) => store.blogs);
   let BlogData = {
     userId: localStorage.getItem("user"),
     title: "",
@@ -54,6 +56,9 @@ const CreateBlog = () => {
       type: "success",
       content: msg,
     });
+    setTimeout(() => {
+      navigate("/");
+    }, 5000);
   };
 
   const Error = (msg) => {
@@ -62,24 +67,22 @@ const CreateBlog = () => {
       content: msg,
     });
   };
-
+  const onReset = () => {
+    form.resetFields();
+  };
   const onFinish = async ({ blog }) => {
     let { journyDate } = blog;
     BlogData = { ...BlogData, ...blog };
     BlogData.journyDate = {};
     BlogData.journyDate.startDate = journyDate[0]?.$d;
     BlogData.journyDate.endDate = journyDate[1]?.$d;
-    const onReset = () => {
-      form.resetFields();
-    };
-    try {
-      const res = await postBlog(BlogData);
-      onReset();
-      success(res.data.message);
 
-      navigate("/");
-    } catch (error) {
-      Error(error.response.data.message);
+    let c = await dispatch(postBlog(BlogData));
+    if (c) {
+      success("Blog posted successfully");
+      onReset();
+    } else {
+      Error("Something went wrong");
     }
   };
 
@@ -138,7 +141,7 @@ const CreateBlog = () => {
         </Form.Item>
 
         <Form.Item
-          label="Journy Date"
+          label="Journey Date"
           name={["blog", "journyDate"]}
           rules={[{ required: true }]}
         >
@@ -191,6 +194,7 @@ const CreateBlog = () => {
             marginLeft: "33%",
           }}
           size="large"
+          loading={blogLoading}
         >
           Submit
         </Button>

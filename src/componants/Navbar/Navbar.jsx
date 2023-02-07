@@ -8,7 +8,6 @@ import { Logout } from "../../store/AuthReducer/AuthAction";
 const Navbar = () => {
   const navigate = useNavigate();
   const { userId, username } = useSelector((store) => store.auth);
-  // const user = localStorage.getItem("user");
 
   return (
     <Space
@@ -34,7 +33,7 @@ const Navbar = () => {
       >
         {userId && (
           <Tooltip title="Create Blog" color="blue">
-            <Link to="/create" s>
+            <Link to="/create">
               <FormOutlined />
             </Link>
           </Tooltip>
@@ -46,10 +45,12 @@ const Navbar = () => {
               style={{
                 fontSize: "24px",
                 color: "#108ee9",
+                textTransform: "capitalize",
               }}
             >
               <Link to="/user">
                 <UserOutlined />
+                {username}
               </Link>
             </Button>
           </Tooltip>

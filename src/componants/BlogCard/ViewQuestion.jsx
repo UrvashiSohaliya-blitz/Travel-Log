@@ -31,10 +31,15 @@ const ViewQuestion = ({ questions, getQuestions }) => {
         </Button>
       </Tooltip>
       <Modal
-        title="Basic Modal"
+        title="Discussion"
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
+        footer={[
+          <Button key="back" onClick={handleCancel}>
+            Ok
+          </Button>,
+        ]}
       >
         {questions &&
           questions.map((e) => {
@@ -52,7 +57,7 @@ const ViewQuestion = ({ questions, getQuestions }) => {
                   }
                   style={{ color: e.answer ? "black" : "gray" }}
                 >
-                  {e.answer ? e.answer : "Ans Not Given"}
+                  {e.answer ? e.answer : "Answer not provided"}
                 </Paragraph>
               </div>
             );

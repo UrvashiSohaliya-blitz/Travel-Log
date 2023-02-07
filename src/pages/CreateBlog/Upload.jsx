@@ -31,10 +31,10 @@ const App = ({ images, setImages }) => {
   const handleChange = ({ fileList: newFileList }) => {
     setFileList(newFileList);
     const data = fileList.map((e) => e.thumbUrl);
-
+    console.log(data);
     setImages(data);
   };
-  console.log(images);
+
   const uploadButton = (
     <div>
       <PlusOutlined />

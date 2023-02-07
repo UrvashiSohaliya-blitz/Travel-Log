@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { updateBlog } from "../../store/BlogReducer/Blog.action";
 
 const { Paragraph, Title } = Typography;
-export const EditBlog = ({ data, handleGetBlogs }) => {
+export const EditBlog = ({ data }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [title, settitle] = useState(data.title);
   const [description, setdescription] = useState(data.description);

@@ -33,7 +33,6 @@ const UserDetail = () => {
       console.log(e);
     }
   };
-  console.log(data);
 
   return (
     <Row align="middle" justify="space-between">
@@ -44,28 +43,23 @@ const UserDetail = () => {
       </Title>
       <div></div>
       <Space>
-        <Card>
-          <Text
-            strong
-            style={{ textTransform: "capitalize", fontSize: "17px" }}
+        <Text strong style={{ textTransform: "capitalize", fontSize: "17px" }}>
+          {data.name}
+        </Text>
+        <br />
+        <Text>{data.email}</Text>
+        <br />
+        <Text>Age: {data.age}</Text>
+        <br />
+        <Tooltip title="Logout" color="blue">
+          <Button
+            onClick={handleLogout}
+            type="text"
+            style={{ marginLeft: "-20px" }}
           >
-            {data.name}
-          </Text>
-          <br />
-          <Text>{data.email}</Text>
-          <br />
-          <Text>Age: {data.age}</Text>
-          <br />
-          <Tooltip title="Logout" color="blue">
-            <Button
-              onClick={handleLogout}
-              type="text"
-              style={{ marginLeft: "-20px" }}
-            >
-              <LogoutOutlined /> Logout
-            </Button>
-          </Tooltip>
-        </Card>
+            <LogoutOutlined /> Logout
+          </Button>
+        </Tooltip>
       </Space>
     </Row>
   );

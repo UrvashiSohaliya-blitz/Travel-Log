@@ -18,16 +18,16 @@ export const blogReducer = ( state = initialState, { type, payload } ) => {
         }
         case AllBlogSuccess: {
 
-            return { ...state, authLoading: false, blogError: false, AllBlogs: payload.data, TotalPages: payload.TotalPages }
+            return { ...state, blogLoading: false, blogError: false, AllBlogs: payload.data, TotalPages: payload.TotalPages }
         }
         case UserBlogSuccess: {
 
-            return { ...state, authLoading: false, blogError: false, userBlogs: payload.data, TotalPages: payload.TotalPages }
+            return { ...state, blogLoading: false, blogError: false, userBlogs: payload.data, TotalPages: payload.TotalPages }
         }
 
         case BlogError: {
 
-            return { ...state, blogError: true, blogError: false }
+            return { ...state, blogError: true, blogLoading: false }
         }
         case setCurruntPage: {
             return { ...state, curruntPage: payload }

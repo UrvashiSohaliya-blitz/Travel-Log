@@ -7,24 +7,23 @@ import {
   Modal,
   Input,
   Tooltip,
+  Row,
 } from "antd";
 import { LinkOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
-import { getblogData } from "../../controller/getblog";
-// import { getUser } from "../../controller/getUser";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {
   deleteQuestion,
   updateQuestion,
 } from "../../store/questionReducer/question.action";
-import { DeleteTwoTone, EditTwoTone } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { getblogData } from "../../store/BlogReducer/Blog.action";
 
 const { Text, Paragraph } = Typography;
 const MyQuestionCard = ({ data }) => {
-  const [loading, setloading] = useState(true);
   const [blog, setblog] = useState({});
-  // const [user, setuser] = useState("");
+  const [loading, setloading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [question, setquestions] = useState(data.question);
   const [ellipsis, setEllipsis] = useState(true);
@@ -33,15 +32,6 @@ const MyQuestionCard = ({ data }) => {
   useEffect(() => {
     handleGetData();
   }, []);
-  // const handleUser = async (id) => {
-  //   try {
-  //     let res = await getUser(id);
-
-  //     setuser(res.data.data.name);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
 
   const handleGetData = async () => {
     setloading(true);
@@ -95,14 +85,21 @@ const MyQuestionCard = ({ data }) => {
       }
     >
       <Text>Question : {data.question}</Text>
-      <Paragraph ellipsis={ellipsis ? { rows: 4 } : false}>
+      <Paragraph
+        style={{ color: data.answer ? "black" : "gray" }}
+        ellipsis={ellipsis ? { rows: 4 } : false}
+      >
         <b>Answer :</b>
-        {data.answer}
+        {data.answer ? data.answer : "Answer not provided"}
       </Paragraph>
-      <div style={{ display: "flex", gap: "5px", alignItems: "center" }}>
-        <Tooltip title="Edit Question" color="blue">
-          <Button type="link" onClick={showModal}>
-            <EditTwoTone />
+      <Row align="space-between" justify="middle">
+        <Tooltip title="Edit Question" color="gray">
+          <Button
+            type="link"
+            onClick={showModal}
+            style={{ fontSize: "20px", color: "#666666" }}
+          >
+            <EditOutlined />
           </Button>
         </Tooltip>
         <Modal
@@ -121,13 +118,13 @@ const MyQuestionCard = ({ data }) => {
           okText="Yes"
           cancelText="No"
         >
-          <a href="#">
-            <Tooltip title="Delete Question" color="blue">
-              <DeleteTwoTone />
-            </Tooltip>
-          </a>
+          <Tooltip title="Delete Question" color="gray">
+            <Text style={{ fontSize: "20px", color: "#666666" }}>
+              <DeleteOutlined />
+            </Text>
+          </Tooltip>
         </Popconfirm>
-      </div>
+      </Row>
     </Card>
   );
 };

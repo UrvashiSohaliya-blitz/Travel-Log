@@ -22,8 +22,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteBlog } from "../../store/BlogReducer/Blog.action";
 
 const { Text, Title, Paragraph } = Typography;
-const BlogCard = ({ data, handleDelete, handleGetBlogs }) => {
+const BlogCard = ({ data }) => {
   const { userId } = useSelector((store) => store.auth);
+  const { blogLoading, blogError } = useSelector((store) => store.blogs);
   const [ellipsis, setEllipsis] = useState(true);
   const [questions, setquestions] = useState([]);
   const [user, setuser] = useState("");
@@ -51,9 +52,13 @@ const BlogCard = ({ data, handleDelete, handleGetBlogs }) => {
       console.log(error);
     }
   };
-  const confirm = (e) => {
-    dispatch(deleteBlog(data._id));
-    message.success("Blog Deleted");
+  const confirm = async (e) => {
+    let res = await dispatch(deleteBlog(data._id));
+    if (res) {
+      message.success("Blog Deleted");
+    } else {
+      message.error("something went wrong");
+    }
   };
 
   const cancel = (e) => {
@@ -100,7 +105,7 @@ const BlogCard = ({ data, handleDelete, handleGetBlogs }) => {
       </div>
       <Image
         src={data.images[0]}
-        fallback="https://picsum.photos/700/400.jpg"
+        ///fallback="https://picsum.photos/700/400.jpg"
         style={{
           width: 350,
           height: "200px",
@@ -124,9 +129,7 @@ const BlogCard = ({ data, handleDelete, handleGetBlogs }) => {
         </Paragraph>
       </div>
       <Row align="space-between" justify="center">
-        {userId === data.userId && (
-          <EditBlog data={data} handleGetBlogs={handleGetBlogs} />
-        )}
+        {userId === data.userId && <EditBlog data={data} />}
         {userId === data.userId && (
           <Popconfirm
             title="Delete the blog"
@@ -134,6 +137,7 @@ const BlogCard = ({ data, handleDelete, handleGetBlogs }) => {
             onConfirm={confirm}
             onCancel={cancel}
             okText="Yes"
+            okButtonProps={{ loading: blogLoading }}
             cancelText="No"
           >
             <Tooltip title="Delete Blog" color="gray">
@@ -151,7 +155,7 @@ const BlogCard = ({ data, handleDelete, handleGetBlogs }) => {
           <AskQuestion
             blog={data}
             userId={userId}
-            handleGetBlogs={handleGetBlogs}
+            getQuestions={getQuestions}
           />
         )}
       </Row>

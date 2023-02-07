@@ -1,13 +1,12 @@
 import { Typography, Card } from "antd";
 import { LinkOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
-import { getblogData } from "../../controller/getblog";
 import { getUser } from "../../controller/getUser";
 import { Link } from "react-router-dom";
-
 import Answer from "../BlogCrud/Answer";
 import Paragraph from "antd/es/typography/Paragraph";
 import Title from "antd/es/typography/Title";
+import { getblogData } from "../../store/BlogReducer/Blog.action";
 const { Text } = Typography;
 const QuestionCard = ({ data }) => {
   const [loading, setloading] = useState(true);
@@ -20,7 +19,6 @@ const QuestionCard = ({ data }) => {
   const handleUser = async (id) => {
     try {
       let res = await getUser(id);
-
       setuser(res.data.data.name);
     } catch (error) {
       console.log(error);
@@ -31,15 +29,17 @@ const QuestionCard = ({ data }) => {
     setloading(true);
     try {
       let res = await getblogData(data.blogId);
-
+      console.log(res.data, data);
       setblog(res.data.data);
 
       handleUser(data.userId);
       setloading(false);
     } catch (error) {
+      console.log(error);
       setloading(false);
     }
   };
+
   return (
     <Card
       title={blog.title}
@@ -51,9 +51,7 @@ const QuestionCard = ({ data }) => {
       }
     >
       <div>
-        <Title level={5} type="warning">
-          {data.question}
-        </Title>
+        <Title level={5}>{data.question}</Title>
         <Text
           style={{
             fontSize: "11px",

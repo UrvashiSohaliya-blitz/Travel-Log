@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Badge, Card, Spin, Typography } from "antd";
 import { Link, useParams } from "react-router-dom";
-import { getblogData } from "../../controller/getblog";
 import { getUser } from "../../controller/getUser";
 import { DefaultRating } from "../CreateBlog/Ratings";
 import "./Blog.css";
 import CarouselPlay from "../../componants/corousol.js/ Carousel";
+import { getblogData } from "../../store/BlogReducer/Blog.action";
 const { Text, Paragraph } = Typography;
 
 const Blog = () => {
@@ -65,7 +65,7 @@ const Blog = () => {
       <div>
         <div>
           <Text>
-            <a> {user ? user : "Someone"} </a> shared their experiance {time}
+            <a> {user ? user : "Someone"} </a> shared their experience {time}
           </Text>
         </div>
       </div>
@@ -73,7 +73,8 @@ const Blog = () => {
         <CarouselPlay images={data.images} />
       </div>
       <Text strong type="secondary">
-        JournyDate : {data.journyDate?.startDate} To {data.journyDate?.endDate}
+        Journey Date : {data.journyDate?.startDate} To{" "}
+        {data.journyDate?.endDate}
       </Text>
       <div>
         <div className="flexBox">
@@ -81,7 +82,7 @@ const Blog = () => {
           <DefaultRating index={data.travelRate} />
         </div>
         <div className="flexBox">
-          <Text strong>SaftyRate :</Text>
+          <Text strong>Safety Rate :</Text>
           <DefaultRating index={data.saftyRate} />
         </div>
         <div className="flexBox">

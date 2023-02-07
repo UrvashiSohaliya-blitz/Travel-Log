@@ -6,8 +6,11 @@ export const deleteBlog = ( id ) => async ( dispatch ) => {
     try {
         await axios.delete( `http://localhost:3000/blogs/${ id }` );
         dispatch( getAllblog() );
+        return true;
     } catch ( error ) {
+
         dispatch( { type: BlogError, payload: error.message } );
+        return false;
     }
 
 }
@@ -44,8 +47,10 @@ export const postBlog = ( data ) => async ( dispatch ) => {
     try {
         let res = await axios.post( 'http://localhost:3000/blogs/create', data );
         dispatch( getAllblog() );
+        return true;
     } catch ( error ) {
         dispatch( { type: BlogError, payload: error.message } );
+        return false;
     }
 
 
@@ -59,8 +64,10 @@ export const updateBlog = ( id, data ) => async ( dispatch ) => {
     try {
         await axios.patch( `http://localhost:3000/blogs/${ id }`, data );
         dispatch( getAllblog() );
+        return true;
     } catch ( error ) {
         dispatch( { type: BlogError, payload: error.message } );
+        return false;
     }
 
 }

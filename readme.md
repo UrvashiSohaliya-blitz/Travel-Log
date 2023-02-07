@@ -1,12 +1,16 @@
 TravelLog
 
 // change all blogs to home -> remove user blog
-// ask to me title not working
-// ui change - color 
-// dont delete just update with boolean
+// don't delete just update with boolean
+// create blog date - pastDate 
 
-// remove latest and oldest filter and add to home
-// change alert to message antd , remove one button- ask questions
-// create blog date - pastDate , check all spelling  , capitalize title, change add ui
-// on submit add notification
 
+
+,did[ check all spelling  , capitalize title, change add ui]
+
+
+// on submit add notification - done
+// remove latest and oldest filter and add to home - done
+// change alert to message antd , remove one button- ask questions -done
+// ui change - color - done
+// ask to me title not working -done

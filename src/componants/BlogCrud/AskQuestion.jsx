@@ -5,7 +5,7 @@ import { askQuestion } from "../../store/questionReducer/question.action";
 import { useDispatch, useSelector } from "react-redux";
 const Context = React.createContext({ name: "Default" });
 const { Search } = Input;
-export const AskQuestion = ({ blog, userId, handleGetBlogs }) => {
+export const AskQuestion = ({ blog, userId, getQuestions }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [val, setval] = useState("");
@@ -19,13 +19,14 @@ export const AskQuestion = ({ blog, userId, handleGetBlogs }) => {
     api.info({
       message: ` ${placement}`,
     });
+    setIsModalOpen(false);
   };
   const showModal = () => {
     setIsModalOpen(true);
   };
 
-  const handleOk = () => {
-    dispatch(
+  const handleOk = async () => {
+    let res = await dispatch(
       askQuestion({
         question: val,
         blogId: blog._id,
@@ -34,12 +35,12 @@ export const AskQuestion = ({ blog, userId, handleGetBlogs }) => {
         answer: "",
       })
     );
-    handleGetBlogs();
-    if (!questionLoading && !questionError) {
+
+    if (res) {
+      getQuestions();
       openNotification("Question Added");
-      setIsModalOpen(false);
     }
-    if (questionError) {
+    if (!res) {
       openNotification("Something Went wrong");
     }
     setval("");
@@ -66,7 +67,7 @@ export const AskQuestion = ({ blog, userId, handleGetBlogs }) => {
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
-        okButtonProps={{ disabled: val.length===0 }}
+        okButtonProps={{ disabled: val.length === 0 }}
       >
         <Input
           placeholder="Question"

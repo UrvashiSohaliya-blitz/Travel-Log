@@ -1,14 +1,17 @@
 import { questionError, questionLoading, questionAskedTome, questionAsked } from './question.actionType';
 import axios from 'axios';
+import { getAllblog } from '../BlogReducer/Blog.action';
 export const askQuestion = ( data ) => async ( dispatch ) => {
     dispatch( { type: questionLoading } )
     try {
         await axios.post( 'http://localhost:3000/question/create', data );
-        dispatch( getQuestionbyUser( data.userId ) );
+        dispatch( getAllblog() );
 
+        return true;
     } catch ( e ) {
-        console.log( e )
+
         dispatch( { type: questionError } );
+        return false;
     }
 
 

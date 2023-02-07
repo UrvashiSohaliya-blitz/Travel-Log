@@ -1,6 +1,6 @@
 export const handleFilter = ( type, data ) => {
     let user = localStorage.getItem( 'user' );
-    console.log( type )
+
     switch ( type.label ) {
 
         case 'All Blogs': {

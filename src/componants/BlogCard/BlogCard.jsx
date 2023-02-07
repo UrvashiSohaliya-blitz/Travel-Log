@@ -8,24 +8,28 @@ import {
   Badge,
   Tooltip,
   Button,
+  Row,
+  Divider,
 } from "antd";
 import { Link } from "react-router-dom";
 import { getUser } from "../../controller/getUser";
 import EditBlog from "../BlogCrud/EditBlog";
 import { AskQuestion } from "../BlogCrud/AskQuestion";
-import { DeleteTwoTone } from "@ant-design/icons";
+import { DeleteOutlined } from "@ant-design/icons";
 import { getQuestionByBlog } from "../../store/questionReducer/question.action";
 import ViewQuestion from "./ViewQuestion";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteBlog } from "../../store/BlogReducer/Blog.action";
 
-const { Text, Paragraph } = Typography;
+const { Text, Title, Paragraph } = Typography;
 const BlogCard = ({ data, handleDelete, handleGetBlogs }) => {
-  const userId = localStorage.getItem("user");
+  const { userId } = useSelector((store) => store.auth);
   const [ellipsis, setEllipsis] = useState(true);
   const [questions, setquestions] = useState([]);
   const [user, setuser] = useState("");
   const time = data.createdAt?.split("T");
   const startDate = data.journyDate.startDate.split("T");
-
+  const dispatch = useDispatch();
   useEffect(() => {
     handleUser();
     getQuestions();
@@ -48,7 +52,7 @@ const BlogCard = ({ data, handleDelete, handleGetBlogs }) => {
     }
   };
   const confirm = (e) => {
-    handleDelete(data._id);
+    dispatch(deleteBlog(data._id));
     message.success("Blog Deleted");
   };
 
@@ -57,7 +61,54 @@ const BlogCard = ({ data, handleDelete, handleGetBlogs }) => {
   };
 
   return (
-    <Card bordered={false} style={{ width: 400, backgroundColor: "#f4f8fa" }}>
+    <Card
+      bordered={false}
+      style={{ width: 400, height: "auto", backgroundColor: "#f4f8fa" }}
+    >
+      {/* <div
+        style={{ display: "flex", justifyContent: "space-between", gap: "3%" }}
+      > */}
+      <div>
+        <Row
+          align="space-between"
+          justify="center"
+          style={{ borderBottom: "1px solid #f0f0f0", paddingBottom: "2px" }}
+        >
+          <Text type="secondary" fontSize="16px">
+            <Link
+              style={{
+                textTransform: "capitalize",
+
+                color: "black",
+                fontWeight: "bold",
+              }}
+              to="#"
+            >
+              {user ? user : "someone"}{" "}
+            </Link>
+            published a blog
+          </Text>
+          <Text> {time ? time[0] : ""} </Text>
+        </Row>
+
+        <Title level={4}>
+          <Link to={`/blog/${data._id}`} style={{ color: "black" }}>
+            {data.title}
+          </Link>
+        </Title>
+        <br />
+      </div>
+      <Image
+        src={data.images[0]}
+        fallback="https://picsum.photos/700/400.jpg"
+        style={{
+          width: 350,
+          height: "200px",
+          maxheight: "200px",
+          objectFit: "cover",
+        }}
+      />
+      {/* </div> */}
       <div style={{ display: "flex", justifyContent: "end", padding: "2%" }}>
         <Badge count={data.tags[0]} />
         <Badge
@@ -65,61 +116,34 @@ const BlogCard = ({ data, handleDelete, handleGetBlogs }) => {
           color="rgb(45, 183, 245)"
         />
       </div>
-      <div
-        style={{ display: "flex", justifyContent: "space-between", gap: "3%" }}
-      >
-        <div>
-          <div>
-            <Text>
-              {time ? time[0] : ""}{" "}
-              <Link
-                style={{ textTransform: "capitalize", fontSize: "17px" }}
-                to="#"
-              >
-                {user ? user : "someone"}{" "}
-              </Link>
-              published a blog
-            </Text>
-          </div>
-          <Link to={`/blog/${data._id}`}>{data.title}</Link>
-          <br />
-        </div>
-        <Image
-          src={data.images[0]}
-          fallback="https://picsum.photos/700/400.jpg"
-          style={{ width: "150px", height: "120px" }}
-        />
-      </div>
-
       <div>
-        <Text strong type="secondary">
-          {startDate[0]}
-        </Text>
+        <Text type="secondary">{startDate[0]}</Text>
         <br />
         <Paragraph ellipsis={ellipsis ? { rows: 4 } : false}>
           {data.description}
         </Paragraph>
       </div>
-      <div style={{ display: "flex", gap: "5px", alignItems: "center" }}>
+      <Row align="space-between" justify="center">
         {userId === data.userId && (
-          <div style={{ display: "flex", gap: "5px", alignItems: "center" }}>
-            <Popconfirm
-              title="Delete the blog"
-              description="Are you sure to delete this blog?"
-              onConfirm={confirm}
-              onCancel={cancel}
-              okText="Yes"
-              cancelText="No"
-            >
-              <Tooltip title="Delete Blog" color="blue">
-                <Button type="link">
-                  <DeleteTwoTone />
-                </Button>
-              </Tooltip>
-            </Popconfirm>
-            <EditBlog data={data} handleGetBlogs={handleGetBlogs} />
-          </div>
+          <EditBlog data={data} handleGetBlogs={handleGetBlogs} />
         )}
+        {userId === data.userId && (
+          <Popconfirm
+            title="Delete the blog"
+            description="Are you sure to delete this blog?"
+            onConfirm={confirm}
+            onCancel={cancel}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Tooltip title="Delete Blog" color="gray">
+              <Text style={{ fontSize: "24px", color: "#666666" }}>
+                <DeleteOutlined />
+              </Text>
+            </Tooltip>
+          </Popconfirm>
+        )}
+
         {questions.length > 0 && (
           <ViewQuestion questions={questions} getQuestions={getQuestions} />
         )}
@@ -130,7 +154,7 @@ const BlogCard = ({ data, handleDelete, handleGetBlogs }) => {
             handleGetBlogs={handleGetBlogs}
           />
         )}
-      </div>
+      </Row>
     </Card>
   );
 };

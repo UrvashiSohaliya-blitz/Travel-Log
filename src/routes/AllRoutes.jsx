@@ -6,6 +6,7 @@ import Signup from "../pages/Auth/Signup";
 import Blog from "../pages/Blog/Blog";
 import CreateBlog from "../pages/CreateBlog/CreateBlog";
 import PrivateRoute from "./PrivateRoute";
+import User from "../pages/User/User";
 const AllRoutes = () => {
   return (
     <Routes>
@@ -24,6 +25,14 @@ const AllRoutes = () => {
         element={
           <PrivateRoute>
             <Blog />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/user"
+        element={
+          <PrivateRoute>
+            <User />
           </PrivateRoute>
         }
       />

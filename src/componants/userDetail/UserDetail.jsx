@@ -1,14 +1,17 @@
-import { Popover, Button, Tooltip } from "antd";
+import { Typography, Button, Tooltip, Avatar, Space, Row } from "antd";
 import React, { useState, useEffect } from "react";
 import { getUser } from "../../controller/getUser";
-import { useNavigate } from "react-router-dom";
-import { UserOutlined, LogoutOutlined } from "@ant-design/icons";
-import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { UserOutlined, LeftOutlined, LogoutOutlined } from "@ant-design/icons";
+import { useDispatch, useSelector } from "react-redux";
 import { Logout } from "../../store/AuthReducer/AuthAction";
-const UserDetail = ({ id }) => {
+
+const { Title, Text } = Typography;
+const UserDetail = () => {
   const [data, setdata] = useState({});
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { userId, username } = useSelector((store) => store.auth);
   // const user = localStorage.getItem("user");
   const handleLogout = () => {
     dispatch({ type: Logout });
@@ -20,44 +23,46 @@ const UserDetail = ({ id }) => {
   }, []);
   const handleUser = async () => {
     try {
-      let res = await getUser(id);
+      let res = await getUser(userId);
       setdata(res.data.data);
     } catch (e) {
       console.log(e);
     }
   };
-  const text = <span>UserDetail</span>;
-  const content = (
-    <div>
-      <p>Username : {data.name}</p>
-      <p>Email : {data.email}</p>
-      <p>Age : {data.age}</p>
-      <Tooltip title="Logout" color="blue">
-        <Button onClick={handleLogout} type="text">
-          <LogoutOutlined /> Logout
-        </Button>
-      </Tooltip>
-    </div>
-  );
+  console.log(data);
+
   return (
-    <div>
-      <Popover
-        placement="bottomLeft"
-        title={text}
-        content={content}
-        trigger="hover"
-      >
-        <Button
-          type="ghost"
-          style={{
-            fontSize: "24px",
-            color: "#108ee9",
-          }}
-        >
-          <UserOutlined />
-        </Button>
-      </Popover>
-    </div>
+    <Row align="middle" justify="space-between">
+      <Title>
+        <Link to="/">
+          <LeftOutlined />
+        </Link>
+      </Title>
+      <Space>
+        <div>
+          <Text
+            strong
+            style={{ textTransform: "capitalize", fontSize: "17px" }}
+          >
+            {data.name}
+          </Text>
+          <br />
+          <Text>{data.email}</Text>
+          <br />
+          <Text>Age: {data.age}</Text>
+          <br />
+          <Tooltip title="Logout" color="blue">
+            <Button
+              onClick={handleLogout}
+              type="text"
+              style={{ marginLeft: "-20px" }}
+            >
+              <LogoutOutlined /> Logout
+            </Button>
+          </Tooltip>
+        </div>
+      </Space>
+    </Row>
   );
 };
 

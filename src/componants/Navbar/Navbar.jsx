@@ -2,12 +2,12 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Space, Button, Tooltip } from "antd";
 import UserDetail from "../userDetail/UserDetail";
-import { LogoutOutlined, FormOutlined } from "@ant-design/icons";
+import { UserOutlined, FormOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { Logout } from "../../store/AuthReducer/AuthAction";
 const Navbar = () => {
   const navigate = useNavigate();
-  const { userId } = useSelector((store) => store.auth);
+  const { userId, username } = useSelector((store) => store.auth);
   // const user = localStorage.getItem("user");
 
   return (
@@ -39,7 +39,21 @@ const Navbar = () => {
             </Link>
           </Tooltip>
         )}
-        {userId && <UserDetail id={userId} />}
+        {userId && (
+          <Tooltip title="Profile" color="blue">
+            <Button
+              type="ghost"
+              style={{
+                fontSize: "24px",
+                color: "#108ee9",
+              }}
+            >
+              <Link to="/user">
+                <UserOutlined />
+              </Link>
+            </Button>
+          </Tooltip>
+        )}
 
         {!userId && <Link to="/login">Login</Link>}
         {!userId && <Link to="/signup">Signup</Link>}

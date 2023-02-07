@@ -12,7 +12,7 @@ export const authReducer = ( state = initState, { type, payload } ) => {
             return { ...state, authLoading: true }
         }
         case AuthSuccess: {
-            console.log( "payload" )
+
             return { ...state, authLoading: false, userId: payload._id, authError: false, username: payload.name }
         }
         case Logout: {

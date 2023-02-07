@@ -21,8 +21,12 @@ const ViewQuestion = ({ questions, getQuestions }) => {
 
   return (
     <>
-      <Tooltip title="View Discussion" color="blue">
-        <Button type="link" onClick={showModal}>
+      <Tooltip title="View Discussion" color="gray">
+        <Button
+          type="link"
+          onClick={showModal}
+          style={{ fontSize: "24px", color: "#666666" }}
+        >
           <CommentOutlined />
         </Button>
       </Tooltip>

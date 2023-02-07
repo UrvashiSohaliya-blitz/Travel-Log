@@ -1,28 +1,28 @@
 import React, { useState } from "react";
 import { Button, Modal, Typography, Tooltip } from "antd";
-import { updateBlog } from "../../controller/updateBlog";
-import { EditTwoTone } from "@ant-design/icons";
+import { EditOutlined } from "@ant-design/icons";
+import { useDispatch } from "react-redux";
+import { updateBlog } from "../../store/BlogReducer/Blog.action";
 
 const { Paragraph, Title } = Typography;
 export const EditBlog = ({ data, handleGetBlogs }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [title, settitle] = useState(data.title);
   const [description, setdescription] = useState(data.description);
+  const dispatch = useDispatch();
   const showModal = () => {
     setIsModalOpen(true);
   };
 
   const handleOk = async () => {
-    try {
-      await updateBlog(data._id, {
+    dispatch(
+      updateBlog(data._id, {
         title: title,
         description: description,
-      });
-      handleGetBlogs();
-      setIsModalOpen(false);
-    } catch (e) {
-      alert(e.message);
-    }
+      })
+    );
+
+    setIsModalOpen(false);
   };
 
   const handleCancel = () => {
@@ -31,9 +31,13 @@ export const EditBlog = ({ data, handleGetBlogs }) => {
 
   return (
     <div>
-      <Tooltip title="Edit Blog" color="blue">
-        <Button type="link" onClick={showModal}>
-          <EditTwoTone />
+      <Tooltip title="Edit Blog" color="gray">
+        <Button
+          type="link"
+          onClick={showModal}
+          style={{ fontSize: "24px", color: "#666666" }}
+        >
+          <EditOutlined />
         </Button>
       </Tooltip>
 

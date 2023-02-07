@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import moment from "moment";
 import { postBlog } from "../../controller/postblog";
 import {
   Form,
@@ -10,14 +11,16 @@ import {
   message,
   Typography,
   Switch,
+  Tooltip,
 } from "antd";
 import CreateFields from "./CreateFields";
 import Ratings from "./Ratings";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Upload from "./Upload";
+import { LeftOutlined } from "@ant-design/icons";
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
-
+const { Title } = Typography;
 const CreateBlog = () => {
   const [places, setplaces] = useState([]);
   const [Heritages, SetHeritages] = useState([]);
@@ -80,11 +83,21 @@ const CreateBlog = () => {
     }
   };
 
+  function disableDateRanges(date) {
+    console.log(date);
+  }
+
   return (
     <div>
+      <Title style={{ position: "absolute", top: "15%" }}>
+        <Link to="/">
+          <LeftOutlined />
+        </Link>
+      </Title>
+
       {contextHolder}
       <Typography.Title style={{ textAlign: "center" }}>
-        CreateBlog
+        Create Blog
       </Typography.Title>
 
       <Form
@@ -125,11 +138,11 @@ const CreateBlog = () => {
         </Form.Item>
 
         <Form.Item
-          label="JournyDate"
+          label="Journy Date"
           name={["blog", "journyDate"]}
           rules={[{ required: true }]}
         >
-          <RangePicker />
+          <RangePicker onChange={disableDateRanges} disabled={[false, false]} />
         </Form.Item>
 
         <Form.Item
@@ -153,7 +166,7 @@ const CreateBlog = () => {
         <Form.Item label="Images" valuePropName="fileList">
           <Upload images={images} setImages={setImages} />
         </Form.Item>
-        <Form.Item label="places to visit" valuePropName="fileList">
+        <Form.Item label="Places To Visit" valuePropName="fileList">
           <CreateFields items={places} setItems={setplaces} />
         </Form.Item>
         <Form.Item label="Heritages" valuePropName="fileList">
@@ -163,18 +176,24 @@ const CreateBlog = () => {
             color="pink"
           />
         </Form.Item>
-        <Form.Item label="Travelling" valuePropName="fileList">
+        <Form.Item label="Traveling" valuePropName="fileList">
           <Ratings index={travelRate} setindex={setTravelRate} />
         </Form.Item>
-        <Form.Item label="Safty" valuePropName="fileList">
+        <Form.Item label="Safety" valuePropName="fileList">
           <Ratings index={saftyRate} setindex={setSaftyRate} />
         </Form.Item>
 
-        <Form.Item label="ADD">
-          <Button type="primary" htmlType="submit">
-            ADD
-          </Button>
-        </Form.Item>
+        <Button
+          type="primary"
+          htmlType="submit"
+          style={{
+            width: "30%",
+            marginLeft: "33%",
+          }}
+          size="large"
+        >
+          Submit
+        </Button>
       </Form>
     </div>
   );

@@ -1,9 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { deleteBlog } from "../../controller/deleteBlog";
 import BlogCard from "../../componants/BlogCard/BlogCard";
-import { DownOutlined, HomeOutlined } from "@ant-design/icons";
+import { DownOutlined } from "@ant-design/icons";
 
-import { Row, Pagination, Dropdown, Divider, Typography, Space } from "antd";
+import {
+  Row,
+  Pagination,
+  Dropdown,
+  Divider,
+  Typography,
+  Space,
+  Tabs,
+} from "antd";
 import { getblog } from "../../controller/getblog";
 import { useDispatch, useSelector } from "react-redux";
 import QuestionCard from "../../componants/QuestionCard/QuestionCard";
@@ -12,13 +20,16 @@ import {
   getQuestionToMe,
 } from "../../store/questionReducer/question.action";
 import MyQuestionCard from "../../componants/QuestionCard/MyQuestion";
-import { getAllblog } from "../../store/BlogReducer/Blog.action";
+import { getAllblog, getUserBlogs } from "../../store/BlogReducer/Blog.action";
 import {
   setCurruntPage,
+  setCurruntUserPage,
   setSortBlogs,
 } from "../../store/BlogReducer/Blog.actionType";
-const { Text, Title } = Typography;
-const Home = () => {
+import UserDetail from "../../componants/userDetail/UserDetail";
+const { Text } = Typography;
+const User = () => {
+  const [key, setkey] = useState(1);
   const [Blogs, setBlogs] = useState([]);
   const [totalPages, settotalPages] = useState(1);
   const [current, setCurrent] = useState(1);
@@ -28,6 +39,8 @@ const Home = () => {
   const [displayQuestion, setquestions] = useState(false);
   const [myQuestion, setMyQuesion] = useState(false);
   const { allQuestions, myQuestions } = useSelector((store) => store.question);
+  const { userId } = useSelector((store) => store.auth);
+
   const {
     AllBlogs,
     userBlogs,
@@ -36,9 +49,9 @@ const Home = () => {
     curruntPage,
     TotalPages,
     SortBlogs,
+    currUserPage,
   } = useSelector((store) => store.blogs);
   const dispatch = useDispatch();
-  const userId = localStorage.getItem("user");
 
   const items = [
     {
@@ -72,39 +85,14 @@ const Home = () => {
 
   useEffect(() => {
     handleGetBlogs();
-    dispatch(getAllblog(curruntPage - 1, 6, SortBlogs));
-  }, [curruntPage, SortBlogs, user]);
+    dispatch(getUserBlogs(currUserPage - 1, 6, SortBlogs, userId));
+    dispatch(getQuestionbyUser(userId));
+    dispatch(getQuestionToMe(getQuestionbyUser));
+  }, [currUserPage, SortBlogs, user]);
 
   const onChange = (page) => {
-    dispatch({ type: setCurruntPage, payload: page });
+    dispatch({ type: setCurruntUserPage, payload: page });
   };
-  // const onChangeTab = (key) => {
-  //   if (key === "3") {
-  //     setsortbyTime(1);
-  //     setquestions(false);
-  //     setMyQuesion(false);
-  //   } else if (key === "2") {
-  //     setsortbyTime(-1);
-  //     setquestions(false);
-  //     setMyQuesion(false);
-  //   } else if (key === "1") {
-  //     setuser(localStorage.getItem("user"));
-  //     setquestions(false);
-  //     setMyQuesion(false);
-  //   } else if (key === "0") {
-  //     setuser(null);
-  //     setquestions(false);
-  //     setMyQuesion(false);
-  //   } else if (key === "4") {
-  //     dispatch(getQuestionbyUser(userId));
-  //     setquestions(true);
-  //     setMyQuesion(false);
-  //   } else if (key === "5") {
-  //     dispatch(getQuestionToMe(userId));
-  //     setMyQuesion(true);
-  //     setquestions(false);
-  //   }
-  // };
 
   const handleGetBlogs = async () => {
     try {
@@ -126,57 +114,81 @@ const Home = () => {
       console.log(e);
     }
   };
+  const sortingItems = [
+    {
+      key: "1",
+      label: `My Blogs`,
+    },
+
+    {
+      key: "2",
+      label: `My Questions`,
+    },
+    {
+      key: "3",
+      label: "Asked To Me",
+    },
+  ];
+  const onChangeTab = (e) => {
+    setkey(e);
+  };
 
   return (
     <>
-      <Row>
-        <Divider orientation="right" plain>
-          <Dropdown menu={{ items }} trigger={["click"]}>
-            <Space style={{ cursor: "pointer" }}>
-              <Text type="secondary">Sort by</Text>
-              <Text strong>
-                {SortBlogs === -1 ? "Recent" : "Old"} <DownOutlined />
-              </Text>
-            </Space>
-          </Dropdown>
-        </Divider>
-      </Row>
-
+      <UserDetail />
+      <Tabs defaultActiveKey="0" items={sortingItems} onChange={onChangeTab} />
+      {key == 1 && (
+        <>
+          <Row>
+            <Divider orientation="right" plain>
+              <Dropdown menu={{ items }} trigger={["click"]}>
+                <Space style={{ cursor: "pointer" }}>
+                  <Text type="secondary">Sort by</Text>
+                  <Text strong>
+                    {SortBlogs === -1 ? "Recent" : "Old"} <DownOutlined />
+                  </Text>
+                </Space>
+              </Dropdown>
+            </Divider>
+          </Row>
+          <Row
+            justify="space-around"
+            gutter={[16, 24]}
+            style={{ padding: "1%" }}
+          >
+            {userBlogs &&
+              userBlogs.map((ele) => {
+                return (
+                  <BlogCard
+                    key={ele._id}
+                    data={ele}
+                    handleDelete={handleDelete}
+                    handleGetBlogs={handleGetBlogs}
+                  />
+                );
+              })}
+          </Row>
+          <Pagination
+            current={currUserPage}
+            onChange={onChange}
+            total={totalPages}
+            style={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+          />
+        </>
+      )}
       <Row justify="space-around" gutter={[16, 24]} style={{ padding: "1%" }}>
-        {AllBlogs &&
-          !displayQuestion &&
-          !myQuestion &&
-          AllBlogs.map((ele) => {
-            return (
-              <BlogCard
-                key={ele._id}
-                data={ele}
-                handleDelete={handleDelete}
-                handleGetBlogs={handleGetBlogs}
-              />
-            );
-          })}
-        {displayQuestion &&
+        {key == 2 &&
           myQuestions &&
           myQuestions.map((e) => <MyQuestionCard data={e} />)}
-        {myQuestion &&
+        {key == 3 &&
           allQuestions &&
           allQuestions.map((e) => <QuestionCard data={e} />)}
       </Row>
-
-      {!displayQuestion && !myQuestion && (
-        <Pagination
-          current={curruntPage}
-          onChange={onChange}
-          total={totalPages * 10}
-          style={{
-            display: "flex",
-            justifyContent: "center",
-          }}
-        />
-      )}
     </>
   );
 };
 
-export default Home;
+export default User;

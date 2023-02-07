@@ -7,4 +7,13 @@ export const getblog = async ( page = 0, limit = 6, sortbyTime, user ) => {
 
 export const getblogData = async ( id ) => {
     return await axios.get( `http://localhost:3000/blogs/${ id }` )
-} 
+}
+export const postBlog = async ( data ) => {
+    return await axios.post( 'http://localhost:3000/blogs/create', data );
+
+}
+
+export const updateBlog = async ( id, data ) => {
+    return await axios.patch( `http://localhost:3000/blogs/${ id }`, data )
+}
+

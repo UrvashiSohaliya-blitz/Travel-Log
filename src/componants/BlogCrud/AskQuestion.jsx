@@ -1,19 +1,30 @@
 import React, { useState } from "react";
-import { Input, Tooltip, Button, Modal } from "antd";
+import { Input, Tooltip, Button, Modal, notification } from "antd";
 import { PlusOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 import { askQuestion } from "../../store/questionReducer/question.action";
 import { useDispatch, useSelector } from "react-redux";
-
+const Context = React.createContext({ name: "Default" });
 const { Search } = Input;
 export const AskQuestion = ({ blog, userId, handleGetBlogs }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [val, setval] = useState("");
+  const [api, contextHolder] = notification.useNotification();
   const { questionLoading, data, questionError } = useSelector(
     (store) => store.question
   );
-
   const dispatch = useDispatch();
-  const [val, setval] = useState("");
-  const onSearch = () => {
+
+  const openNotification = (placement) => {
+    api.info({
+      message: ` ${placement}`,
+    });
+  };
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
     dispatch(
       askQuestion({
         question: val,
@@ -25,17 +36,13 @@ export const AskQuestion = ({ blog, userId, handleGetBlogs }) => {
     );
     handleGetBlogs();
     if (!questionLoading && !questionError) {
-      alert("Question Added");
+      openNotification("Question Added");
+      setIsModalOpen(false);
+    }
+    if (questionError) {
+      openNotification("Something Went wrong");
     }
     setval("");
-    setIsModalOpen(false);
-  };
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleOk = () => {
-    setIsModalOpen(false);
   };
 
   const handleCancel = () => {
@@ -44,9 +51,13 @@ export const AskQuestion = ({ blog, userId, handleGetBlogs }) => {
 
   return (
     <>
-      {" "}
-      <Tooltip title="Ask Question" color="blue">
-        <Button type="link" onClick={showModal}>
+      {contextHolder}
+      <Tooltip title="Ask Question" color="gray">
+        <Button
+          type="link"
+          onClick={showModal}
+          style={{ fontSize: "24px", color: "#666666" }}
+        >
           <QuestionCircleOutlined />
         </Button>
       </Tooltip>
@@ -55,17 +66,16 @@ export const AskQuestion = ({ blog, userId, handleGetBlogs }) => {
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
+        okButtonProps={{ disabled: val.length===0 }}
       >
-        <Search
+        <Input
           placeholder="Question"
           value={val}
-          enterButton={<PlusOutlined />}
           onChange={(e) => {
             setval(e.target.value);
           }}
           loading={questionLoading}
           error={questionError}
-          onSearch={onSearch}
         />
       </Modal>
     </>

@@ -42,13 +42,13 @@ const CreateBlog = () => {
     heritages: Heritages,
     placesToVisit: places,
     travelRate: travelRate,
-    saftyRate: saftyRate,
+    safetyRate: saftyRate,
     travelCost: "",
-    journyDate: {
+    journeyDate: {
       start: "",
       end: "",
     },
-    allowQustions: false,
+    allowQuestions: false,
   };
 
   const success = (msg) => {
@@ -58,7 +58,7 @@ const CreateBlog = () => {
     });
     setTimeout(() => {
       navigate("/");
-    }, 5000);
+    }, 3000);
   };
 
   const Error = (msg) => {
@@ -73,9 +73,9 @@ const CreateBlog = () => {
   const onFinish = async ({ blog }) => {
     let { journyDate } = blog;
     BlogData = { ...BlogData, ...blog };
-    BlogData.journyDate = {};
-    BlogData.journyDate.startDate = journyDate[0]?.$d;
-    BlogData.journyDate.endDate = journyDate[1]?.$d;
+    BlogData.journeyDate = {};
+    BlogData.journeyDate.startDate = journyDate[0]?.$d;
+    BlogData.journeyDate.endDate = journyDate[1]?.$d;
 
     let c = await dispatch(postBlog(BlogData));
     if (c) {
@@ -162,7 +162,7 @@ const CreateBlog = () => {
         >
           <TextArea rows={4} />
         </Form.Item>
-        <Form.Item label="Questions" name={["blog", "allowQustions"]}>
+        <Form.Item label="Questions" name={["blog", "allowQuestions"]}>
           <Switch />
         </Form.Item>
 

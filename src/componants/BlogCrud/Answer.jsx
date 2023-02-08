@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Modal, Typography, Input, Tooltip } from "antd";
 import { useDispatch } from "react-redux";
 import { addAnswer } from "../../store/questionReducer/question.action";
-import { EditTwoTone } from "@ant-design/icons";
+import { EditOutlined } from "@ant-design/icons";
 
 const { TextArea } = Input;
 const { Title } = Typography;
@@ -29,8 +29,8 @@ const Answer = ({ data }) => {
     <>
       <Button type="link" onClick={showModal}>
         {data.answer ? (
-          <Tooltip title="Edit Answer" color="blue">
-            <EditTwoTone />
+          <Tooltip title="Edit Answer" color="gray">
+            <EditOutlined style={{ fontSize: "24px", color: "#666666" }} />
           </Tooltip>
         ) : (
           "Give Answer"

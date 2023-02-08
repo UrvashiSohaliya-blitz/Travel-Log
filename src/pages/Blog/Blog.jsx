@@ -52,7 +52,10 @@ const Blog = () => {
   console.log(data);
 
   return (
-    <Card bordered={false} style={{ padding: "0 2% 0 2%" }}>
+    <Card
+      bordered={false}
+      style={{ padding: "0 2% 0 2%", backgroundColor: "transparent" }}
+    >
       <Text style={{ color: "#f2a53f", fontSize: "30px", marginRight: "2%" }}>
         {data.title}
       </Text>
@@ -73,8 +76,8 @@ const Blog = () => {
         <CarouselPlay images={data.images} />
       </div>
       <Text strong type="secondary">
-        Journey Date : {data.journyDate?.startDate} To{" "}
-        {data.journyDate?.endDate}
+        Journey Date : {data.journeyDate?.startDate} To{" "}
+        {data.journeyDate?.endDate}
       </Text>
       <div>
         <div className="flexBox">
@@ -83,7 +86,7 @@ const Blog = () => {
         </div>
         <div className="flexBox">
           <Text strong>Safety Rate :</Text>
-          <DefaultRating index={data.saftyRate} />
+          <DefaultRating index={data.safetyRate} />
         </div>
         <div className="flexBox">
           <Text strong>Places To Visit : </Text>

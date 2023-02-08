@@ -29,7 +29,7 @@ const BlogCard = ({ data }) => {
   const [questions, setquestions] = useState([]);
   const [user, setuser] = useState("");
   const time = data.createdAt?.split("T");
-  const startDate = data.journyDate.startDate.split("T");
+  const startDate = data.journeyDate?.startDate.split("T");
   const dispatch = useDispatch();
   useEffect(() => {
     handleUser();
@@ -122,7 +122,7 @@ const BlogCard = ({ data }) => {
         />
       </div>
       <div>
-        <Text type="secondary">{startDate[0]}</Text>
+        <Text type="secondary">{startDate && startDate[0]}</Text>
         <br />
         <Paragraph ellipsis={ellipsis ? { rows: 4 } : false}>
           {data.description}
@@ -151,7 +151,7 @@ const BlogCard = ({ data }) => {
         {questions.length > 0 && (
           <ViewQuestion questions={questions} getQuestions={getQuestions} />
         )}
-        {userId !== data.userId && data.allowQustions && (
+        {userId !== data.userId && data.allowQuestions && (
           <AskQuestion
             blog={data}
             userId={userId}

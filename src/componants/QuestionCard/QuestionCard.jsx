@@ -29,7 +29,6 @@ const QuestionCard = ({ data }) => {
     setloading(true);
     try {
       let res = await getblogData(data.blogId);
-      console.log(res.data, data);
       setblog(res.data.data);
 
       handleUser(data.userId);
@@ -42,12 +41,14 @@ const QuestionCard = ({ data }) => {
 
   return (
     <Card
-      title={blog.title}
+      title={blog.isDeleted ? "Blog Deleted" : blog.title}
       style={{ width: 300 }}
       extra={
-        <Link to={`/blog/${data.blogId}`}>
-          <LinkOutlined />
-        </Link>
+        !blog.isDeleted && (
+          <Link to={`/blog/${data.blogId}`}>
+            <LinkOutlined />
+          </Link>
+        )
       }
     >
       <div>

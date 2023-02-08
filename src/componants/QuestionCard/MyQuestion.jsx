@@ -76,12 +76,14 @@ const MyQuestionCard = ({ data }) => {
   };
   return (
     <Card
-      title={blog.title}
+      title={blog.isDeleted ? "Blog deleted" : blog.title}
       style={{ width: 300 }}
       extra={
-        <Link to={`/blog/${data.blogId}`}>
-          <LinkOutlined />
-        </Link>
+        !blog.isDeleted && (
+          <Link to={`/blog/${data.blogId}`}>
+            <LinkOutlined />
+          </Link>
+        )
       }
     >
       <Text>Question : {data.question}</Text>

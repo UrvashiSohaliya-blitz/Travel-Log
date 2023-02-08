@@ -1,11 +1,18 @@
 import axios from 'axios';
 import { BlogError, AllBlogSuccess, UserBlogSuccess, BlogLoading, } from "./Blog.actionType";
-
+let reqInstance = axios.create( {
+    headers: {
+        Authorization: `Bearer ${ localStorage.getItem( "user" ) }`
+    }
+}
+)
 export const deleteBlog = ( id ) => async ( dispatch ) => {
-    dispatch( { type: BlogLoading } )
+    dispatch( { type: BlogLoading } );
+    const user = localStorage.getItem( 'user' );
     try {
         await axios.delete( `http://localhost:3000/blogs/${ id }` );
-        dispatch( getAllblog() );
+        dispatch( getUserBlogs( 0, 6, -1, user ) );
+
         return true;
     } catch ( error ) {
 
@@ -16,11 +23,12 @@ export const deleteBlog = ( id ) => async ( dispatch ) => {
 }
 
 export const getAllblog = ( curruntPage = 0, limit = 6, sortbyTime = -1 ) => async ( dispatch ) => {
+    const userId = localStorage.getItem( 'user' );
 
     dispatch( { type: BlogLoading } )
 
     try {
-        let res = await axios.get( `http://localhost:3000/blogs?page=${ curruntPage }&limit=${ limit }&createdAt=${ sortbyTime }` );
+        let res = await reqInstance.get( `http://localhost:3000/blogs?page=${ curruntPage }&limit=${ limit }&createdAt=${ sortbyTime }` );
         dispatch( { type: AllBlogSuccess, payload: res.data } );
 
     } catch ( error ) {
@@ -32,7 +40,7 @@ export const getUserBlogs = ( page = 0, limit = 6, sortbyTime, user ) => async (
     dispatch( { type: BlogLoading } )
 
     try {
-        let res = await axios.get( `http://localhost:3000/blogs?user=${ user }&page=${ page }&limit=${ limit }&createdAt=${ sortbyTime }` )
+        let res = await reqInstance.get( `http://localhost:3000/blogs?user=${ user }&page=${ page }&limit=${ limit }&createdAt=${ sortbyTime }` )
 
         dispatch( { type: UserBlogSuccess, payload: res.data } );
 

@@ -68,7 +68,12 @@ const BlogCard = ({ data }) => {
   return (
     <Card
       bordered={false}
-      style={{ width: 400, height: "auto", backgroundColor: "#f4f8fa" }}
+      style={{
+        width: 400,
+
+        backgroundColor: "#f4f8fa",
+        height: "auto",
+      }}
     >
       {/* <div
         style={{ display: "flex", justifyContent: "space-between", gap: "3%" }}
@@ -103,17 +108,19 @@ const BlogCard = ({ data }) => {
         </Title>
         <br />
       </div>
-      <Image
-        src={data.images[0]}
-        ///fallback="https://picsum.photos/700/400.jpg"
-        style={{
-          width: 350,
-          height: "200px",
-          maxheight: "200px",
-          objectFit: "cover",
-        }}
-      />
-      {/* </div> */}
+      {data.images.length > 0 && (
+        <Image
+          src={data.images[0]}
+          ///fallback="https://picsum.photos/700/400.jpg"
+          style={{
+            width: 350,
+            height: "200px",
+            maxheight: "200px",
+            objectFit: "cover",
+          }}
+        />
+      )}
+
       <div style={{ display: "flex", justifyContent: "end", padding: "2%" }}>
         <Badge count={data.tags[0]} />
         <Badge

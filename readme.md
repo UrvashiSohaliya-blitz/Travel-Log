@@ -1,12 +1,6 @@
 TravelLog
-
-// change all blogs to home -> remove user blog
-// create blog date - pastDate 
-
-
-
-
-
+ * change all blogs to home -> remove user blog
+ * create blog date - pastDate 
  * don't delete just update with boolean
  * did[ check all spelling  , capitalize title, change add ui]   
  * on Submit notification added in create blog

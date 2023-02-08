@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Badge, Card, Spin, Typography } from "antd";
+import { Badge, Card, Row, Spin, Typography } from "antd";
 import { Link, useParams } from "react-router-dom";
 import { getUser } from "../../controller/getUser";
 import { DefaultRating } from "../CreateBlog/Ratings";
 import "./Blog.css";
 import CarouselPlay from "../../componants/corousol.js/ Carousel";
 import { getblogData } from "../../store/BlogReducer/Blog.action";
-const { Text, Paragraph } = Typography;
+const { Text, Paragraph, Title } = Typography;
 
 const Blog = () => {
   const { id } = useParams();
@@ -56,15 +56,18 @@ const Blog = () => {
       bordered={false}
       style={{ padding: "0 2% 0 2%", backgroundColor: "transparent" }}
     >
-      <Text style={{ color: "#f2a53f", fontSize: "30px", marginRight: "2%" }}>
-        {data.title}
-      </Text>
-
-      <Badge
-        count={data.location ? data.location : "unknown place"}
-        color="rgb(45, 183, 245)"
-      />
-      <Badge count={data.tags && data.tags[0]} />
+      <Row align="space-between" justify="middle">
+        <Title style={{ color: "Black", fontSize: "30px", marginRight: "2%" }}>
+          {data.title}
+        </Title>
+        <Row>
+          <Badge
+            count={data.location ? data.location : "unknown place"}
+            color="rgb(45, 183, 245)"
+          />
+          <Badge count={data.tags && data.tags[0]} />
+        </Row>
+      </Row>
       <div>
         <div>
           <Text>
@@ -80,22 +83,30 @@ const Blog = () => {
         {data.journeyDate?.endDate}
       </Text>
       <div>
-        <div className="flexBox">
-          <Text strong>TravelRate :</Text>
-          <DefaultRating index={data.travelRate} />
-        </div>
-        <div className="flexBox">
-          <Text strong>Safety Rate :</Text>
-          <DefaultRating index={data.safetyRate} />
-        </div>
-        <div className="flexBox">
-          <Text strong>Places To Visit : </Text>
-          <Text> {placesToVisit}</Text>
-        </div>
-        <div className="flexBox">
-          <Text strong>Heritages : </Text>
-          <Text> {heritages}</Text>
-        </div>
+        {data.travelRate > 0 && (
+          <div className="flexBox">
+            <Text strong>TravelRate :</Text>
+            <DefaultRating index={data.travelRate} />
+          </div>
+        )}
+        {data.safetyRate > 0 && (
+          <div className="flexBox">
+            <Text strong>Safety Rate :</Text>
+            <DefaultRating index={data.safetyRate} />
+          </div>
+        )}
+        {placesToVisit && (
+          <div className="flexBox">
+            <Text strong>Places To Visit : </Text>
+            <Text> {placesToVisit}</Text>
+          </div>
+        )}
+        {heritages && (
+          <div className="flexBox">
+            <Text strong>Heritages : </Text>
+            <Text> {heritages}</Text>
+          </div>
+        )}
         <div className="flexBox">
           <Text strong>Cost : </Text>
           <Text> Rs.{data.travelCost}</Text>

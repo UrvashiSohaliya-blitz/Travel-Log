@@ -31,7 +31,7 @@ const App = ({ images, setImages }) => {
   const handleChange = ({ fileList: newFileList }) => {
     setFileList(newFileList);
     const data = fileList.map((e) => e.thumbUrl);
-    console.log(data);
+    console.log(data, fileList);
     setImages(data);
   };
 

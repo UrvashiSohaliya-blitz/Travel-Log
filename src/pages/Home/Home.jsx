@@ -82,7 +82,6 @@ const Home = () => {
   const images_Src = [
     "https://static1.makeuseofimages.com/wordpress/wp-content/uploads/2022/05/best-travel-planning-apps-with-maps-featured.jpg?q=50&fit=contain&w=1140&h=&dpr=1.5",
     "https://static1.makeuseofimages.com/wordpress/wp-content/uploads/2022/09/best-travel-journal-trip-diary-apps-featured.jpg?q=50&fit=contain&w=1140&h=&dpr=1.5",
-    
   ];
   return (
     <>
@@ -124,20 +123,12 @@ const Home = () => {
 
       <Row justify="space-around" gutter={[16, 24]} style={{ padding: "1%" }}>
         {AllBlogs &&
-          !displayQuestion &&
-          !myQuestion &&
           AllBlogs.map((ele) => {
             return <BlogCard key={ele._id} data={ele} />;
           })}
-        {displayQuestion &&
-          myQuestions &&
-          myQuestions.map((e) => <MyQuestionCard data={e} />)}
-        {myQuestion &&
-          allQuestions &&
-          allQuestions.map((e) => <QuestionCard data={e} />)}
       </Row>
 
-      {!displayQuestion && !myQuestion && (
+      {AllBlogs.length > 0 && (
         <Pagination
           current={curruntPage}
           onChange={onChange}

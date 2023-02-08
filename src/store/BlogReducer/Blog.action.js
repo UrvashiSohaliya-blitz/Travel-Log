@@ -11,7 +11,11 @@ export const deleteBlog = ( id ) => async ( dispatch ) => {
     dispatch( { type: BlogLoading } );
     const user = localStorage.getItem( 'user' );
     try {
-        await reqInstance.delete( `http://localhost:3000/blogs/${ id }` );
+        await reqInstance.delete( `http://localhost:3000/blogs/${ id }`, {
+            headers: {
+                Authorization: `Bearer ${ localStorage.getItem( "user" ) }`
+            }
+        } );
         dispatch( getUserBlogs( 0, 6, -1, user ) );
 
         return true;
@@ -59,8 +63,8 @@ export const getUserBlogs = ( page = 0, limit = 6, sortbyTime, user ) => async (
 export const postBlog = ( data ) => async ( dispatch ) => {
     dispatch( { type: BlogLoading } );
     try {
-        await axios.post( 'http://localhost:3000/blogs/create', data );
-        console.log( "res.data " )
+        await reqInstance.post( 'http://localhost:3000/blogs/create', data );
+
         dispatch( getAllblog() );
 
         return true;

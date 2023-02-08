@@ -18,6 +18,7 @@ import Upload from "./Upload";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { postBlog } from "../../store/BlogReducer/Blog.action";
+import dayjs from "dayjs";
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 const { Title } = Typography;
@@ -28,6 +29,7 @@ const CreateBlog = () => {
   const [saftyRate, setSaftyRate] = useState(-1);
   const [messageApi, contextHolder] = message.useMessage();
   const [images, setImages] = useState([]);
+  const [dateDisabled, setdateDisabled] = useState([false, false]);
 
   const [form] = Form.useForm();
   const dispatch = useDispatch();
@@ -86,9 +88,10 @@ const CreateBlog = () => {
     }
   };
 
-  function disableDateRanges(date) {
-    console.log(date);
-  }
+  const disabledDate = (current) => {
+    // Can not select days before today and today
+    return current && current > dayjs().endOf("day");
+  };
 
   return (
     <div>
@@ -145,7 +148,10 @@ const CreateBlog = () => {
           name={["blog", "journyDate"]}
           rules={[{ required: true }]}
         >
-          <RangePicker onChange={disableDateRanges} disabled={[false, false]} />
+          <RangePicker
+            format={["DD/MM/YYYY", "DD/MM/YY"]}
+            disabledDate={disabledDate}
+          />
         </Form.Item>
 
         <Form.Item

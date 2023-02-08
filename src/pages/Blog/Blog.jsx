@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Badge, Card, Row, Spin, Typography } from "antd";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { getUser } from "../../controller/getUser";
 import { DefaultRating } from "../CreateBlog/Ratings";
 import "./Blog.css";
@@ -49,7 +49,6 @@ const Blog = () => {
       </div>
     );
   }
-  console.log(data);
 
   return (
     <Card
@@ -71,7 +70,8 @@ const Blog = () => {
       <div>
         <div>
           <Text>
-            <a> {user ? user : "Someone"} </a> shared their experience {time}
+            <Text strong> {user ? user : "Someone"} </Text> shared their
+            experience {time}
           </Text>
         </div>
       </div>

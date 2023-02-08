@@ -1,4 +1,4 @@
-import { BlogError, AllBlogSuccess, UserBlogSuccess, setCurruntUserPage, BlogLoading, setCurruntPage, setSortBlogs } from "./Blog.actionType";
+import { BlogError, AllBlogSuccess, UserBlogSuccess, setCurruntUserPage, BlogLoading, resetBlogs, setCurruntPage, setSortBlogs } from "./Blog.actionType";
 const initialState = {
 
     AllBlogs: [],
@@ -37,6 +37,9 @@ export const blogReducer = ( state = initialState, { type, payload } ) => {
         }
         case setSortBlogs: {
             return { ...state, SortBlogs: payload }
+        }
+        case resetBlogs: {
+            return { ...initialState }
         }
         default: {
             return state

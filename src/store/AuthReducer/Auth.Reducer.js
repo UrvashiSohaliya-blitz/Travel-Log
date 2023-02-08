@@ -17,7 +17,7 @@ export const authReducer = ( state = initState, { type, payload } ) => {
         }
         case Logout: {
             localStorage.removeItem( 'user' )
-            return { ...state, authLoading: false, userId: "", authError: false }
+            return { ...state, authLoading: false, userId: "", authError: false, username: "" }
         }
         case AuthError: {
 

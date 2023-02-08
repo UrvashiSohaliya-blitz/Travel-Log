@@ -7,9 +7,7 @@ import {
   Popconfirm,
   Badge,
   Tooltip,
-  Button,
   Row,
-  Divider,
 } from "antd";
 import { Link } from "react-router-dom";
 import { getUser } from "../../controller/getUser";
@@ -75,9 +73,6 @@ const BlogCard = ({ data }) => {
         height: "auto",
       }}
     >
-      {/* <div
-        style={{ display: "flex", justifyContent: "space-between", gap: "3%" }}
-      > */}
       <div>
         <Row
           align="space-between"

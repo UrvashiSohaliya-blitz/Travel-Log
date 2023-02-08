@@ -9,6 +9,7 @@ import {
 } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { Logout } from "../../store/AuthReducer/AuthAction";
+import { resetBlogs } from "../../store/BlogReducer/Blog.actionType";
 
 const { Title, Text } = Typography;
 const UserDetail = () => {
@@ -19,6 +20,7 @@ const UserDetail = () => {
   // const user = localStorage.getItem("user");
   const handleLogout = () => {
     dispatch({ type: Logout });
+    dispatch({ type: resetBlogs });
     navigate("/");
   };
 

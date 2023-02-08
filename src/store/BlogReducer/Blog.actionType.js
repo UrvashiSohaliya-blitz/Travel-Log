@@ -5,4 +5,5 @@ export const AllBlogSuccess = "AllBlogSuccess";
 export const setCurruntPage = "setCurruntPage";
 export const setSortBlogs = "SortBlogs";
 export const setCurruntUserPage = "setCurruntUserPage";
+export const resetBlogs = "resetBlogs";
 

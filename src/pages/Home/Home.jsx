@@ -14,31 +14,18 @@ import {
 } from "antd";
 
 import { useDispatch, useSelector } from "react-redux";
-import QuestionCard from "../../componants/QuestionCard/QuestionCard";
-import {
-  getQuestionbyUser,
-  getQuestionToMe,
-} from "../../store/questionReducer/question.action";
-import MyQuestionCard from "../../componants/QuestionCard/MyQuestion";
-import { getAllblog } from "../../store/BlogReducer/Blog.action";
+
+import { getAllblog, trash } from "../../store/BlogReducer/Blog.action";
 import {
   setCurruntPage,
   setSortBlogs,
 } from "../../store/BlogReducer/Blog.actionType";
-const { Text, Title } = Typography;
+const { Text } = Typography;
 const Home = () => {
-  const [displayQuestion, setquestions] = useState(false);
-  const [myQuestion, setMyQuesion] = useState(false);
-  const { allQuestions, myQuestions } = useSelector((store) => store.question);
-  const {
-    AllBlogs,
-    userBlogs,
-    blogLoading,
-    blogError,
-    curruntPage,
-    TotalPages,
-    SortBlogs,
-  } = useSelector((store) => store.blogs);
+  const { AllBlogs, curruntPage, TotalPages, SortBlogs } = useSelector(
+    (store) => store.blogs
+  );
+  const { userId, username } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
 
   const items = [
@@ -73,7 +60,9 @@ const Home = () => {
 
   useEffect(() => {
     dispatch(getAllblog(curruntPage - 1, 6, SortBlogs));
-  }, [curruntPage, SortBlogs]);
+    dispatch(trash());
+    console.log(username);
+  }, [curruntPage, SortBlogs, userId]);
 
   const onChange = (page) => {
     dispatch({ type: setCurruntPage, payload: page });

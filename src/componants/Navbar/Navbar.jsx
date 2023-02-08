@@ -8,7 +8,7 @@ import { Logout } from "../../store/AuthReducer/AuthAction";
 const Navbar = () => {
   const navigate = useNavigate();
   const { userId, username } = useSelector((store) => store.auth);
-
+  console.log(username, userId);
   return (
     <Space
       style={{

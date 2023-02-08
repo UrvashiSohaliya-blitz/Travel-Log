@@ -1,7 +1,7 @@
 import { AuthSuccess, Logout, AuthLoading, AuthError } from "./AuthAction";
 const initState = {
     userId: localStorage.getItem( 'user' ) || null,
-    username: "",
+    username: localStorage.getItem( 'username' ) || '',
     authLoading: false,
     authError: false
 }
@@ -12,7 +12,7 @@ export const authReducer = ( state = initState, { type, payload } ) => {
             return { ...state, authLoading: true }
         }
         case AuthSuccess: {
-
+            localStorage.setItem( 'username', payload.name )
             return { ...state, authLoading: false, userId: payload._id, authError: false, username: payload.name }
         }
         case Logout: {
